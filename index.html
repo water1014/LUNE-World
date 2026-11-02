@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#e9e3e2">
+  <meta name="description" content="LUNE，一个属于两个人的小小世界。">
+  <title>LUNE · A little world of our own</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#" aria-label="LUNE home"><span class="wordmark-mark">L</span><span>LUNE</span></a>
+      <div class="topbar-right">
+        <span class="live-indicator"><i></i> OUR LITTLE WORLD</span>
+        <button class="icon-button theme-toggle" id="themeToggle" aria-label="切换昼夜" title="切换昼夜"><span class="sun-icon">☼</span><span class="moon-icon">☾</span></button>
+      </div>
+    </header>
+
+    <section class="intro">
+      <div class="eyebrow"><span class="eyebrow-line"></span> A PLACE TO RETURN TO</div>
+      <h1>把日子，慢慢住成<br><em>喜欢的模样。</em></h1>
+      <p class="intro-note">一个小小的世界，收藏相遇、日常，以及所有想一起记住的事。</p>
+    </section>
+
+    <section class="world-stage" aria-label="LUNE 立体小屋">
+      <div class="stage-glow"></div>
+      <div class="stage-label stage-label-left"><span>01</span> THE HOUSE</div>
+      <div class="stage-label stage-label-right">EST. FOR TWO <span>✳</span></div>
+      <div class="house-scene" id="houseScene">
+        <div class="house-shadow"></div>
+        <div class="house-back">
+          <div class="wall-panel wall-left"></div><div class="wall-panel wall-right"></div>
+          <div class="wall-seam"></div>
+          <div class="window-frame"><div class="window-sky"><span class="window-sun"></span><span class="window-cloud cloud-a"></span><span class="window-cloud cloud-b"></span></div><div class="window-cross-v"></div><div class="window-cross-h"></div><div class="window-sill"></div></div>
+          <div class="wall-art"><span class="art-orbit"></span><span class="art-dot"></span></div>
+          <div class="wall-sconce"><i></i></div>
+          <div class="shelf"><span></span><span></span><span></span><b></b></div>
+        </div>
+        <div class="room-floor"><div class="floor-line floor-line-one"></div><div class="floor-line floor-line-two"></div><div class="floor-line floor-line-three"></div></div>
+        <div class="rug"></div>
+        <div class="sofa"><div class="sofa-back"></div><div class="sofa-seat"></div><div class="sofa-arm sofa-arm-left"></div><div class="sofa-arm sofa-arm-right"></div><div class="sofa-cushion cushion-one"></div><div class="sofa-cushion cushion-two"></div><div class="sofa-leg leg-one"></div><div class="sofa-leg leg-two"></div></div>
+        <div class="side-table"><div class="table-top"></div><div class="table-stem"></div><div class="table-foot"></div><div class="tea-cup"></div></div>
+        <div class="plant plant-left"><i></i><i></i><i></i><i></i><b></b></div>
+        <div class="lamp"><div class="lamp-shade"></div><div class="lamp-stem"></div><div class="lamp-base"></div></div>
+        <button class="room-hotspot hotspot-memory" data-room="memories" aria-label="打开记忆相册"><span class="hotspot-pulse"></span><span class="hotspot-caption">MEMORIES</span></button>
+        <button class="room-hotspot hotspot-calendar" data-room="calendar" aria-label="打开日历"><span class="hotspot-pulse"></span><span class="hotspot-caption">OUR DAYS</span></button>
+        <button class="room-hotspot hotspot-notes" data-room="notes" aria-label="打开小纸条"><span class="hotspot-pulse"></span><span class="hotspot-caption">LITTLE NOTES</span></button>
+        <button class="room-hotspot hotspot-together" data-room="together" aria-label="打开我们的空间"><span class="hotspot-pulse"></span><span class="hotspot-caption">TOGETHER</span></button>
+        <div class="floor-stamp">L<span>·</span>W</div>
+      </div>
+      <div class="stage-footer"><span>轻触屋里的物件，去看看里面。</span><span class="stage-scroll">EXPLORE <b>↗</b></span></div>
+    </section>
+
+    <section class="below-world">
+      <div class="section-heading"><div><span class="eyebrow">A FEW THINGS TO KEEP</span><h2>今天，也值得被收藏。</h2></div><span class="heading-date" id="todayDate"></span></div>
+      <div class="little-summary">
+        <div class="summary-copy"><span class="summary-kicker">A NOTE FOR TODAY</span><p>日子不必特别盛大。<br>有一些小小的瞬间，就已经很好。</p><span class="summary-sign">— with love, LUNE</span></div>
+        <div class="summary-seal">L<br><small>♡</small></div>
+      </div>
+    </section>
+    <footer class="footer"><span>MADE OF LITTLE MOMENTS</span><span>© LUNE WORLD</span></footer>
+  </main>
+
+  <nav class="mobile-dock" aria-label="快捷入口">
+    <button data-room="memories"><span>▧</span><small>记忆</small></button>
+    <button data-room="calendar"><span>▦</span><small>日历</small></button>
+    <button class="dock-home" id="homeButton"><span>⌂</span><small>小屋</small></button>
+    <button data-room="notes"><span>✉</span><small>纸条</small></button>
+    <button data-room="together"><span>♡</span><small>我们</small></button>
+  </nav>
+
+  <dialog class="room-dialog" id="roomDialog">
+    <div class="dialog-top"><span class="dialog-mark">LUNE / ROOM</span><button class="icon-button close-dialog" id="closeDialog" aria-label="关闭">×</button></div>
+    <div class="dialog-content"><span class="dialog-index" id="dialogIndex">01 / 04</span><h2 id="dialogTitle">记忆相册</h2><p id="dialogDescription">把那些舍不得忘记的瞬间，好好收在这里。</p><div class="dialog-placeholder"><span id="dialogSymbol">▧</span><small>THIS LITTLE SPACE IS WAITING</small></div><p class="dialog-footnote">这里会慢慢长成你们自己的样子。</p></div>
+  </dialog>
+  <script src="./app.js"></script>
+</body>
+</html>
