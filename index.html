@@ -40,7 +40,27 @@
     <div class="dialog-content"><span id="dialogIndex" class="dialog-index">01 / 04</span><h2 id="dialogTitle">记忆相册</h2><p id="dialogDescription"></p><div class="dialog-art" id="dialogSymbol">♡</div><small>这里还空着，等你慢慢放进生活。</small></div>
   </dialog>
 </main>
+<script>
+(function(){
+  var loading=document.getElementById("loading");
+  var error=document.getElementById("loadError");
+  function show(message){
+    if(loading) loading.classList.add("hidden");
+    if(error){error.classList.add("visible");error.textContent=message+"  可检查网络后点击这里重新加载。";error.style.cursor="pointer";error.onclick=function(){location.reload()};}
+  }
+  window.luneShowError=show;
+  window.addEventListener("error",function(event){
+    if(event.target&&event.target.tagName==="SCRIPT") show("小世界的场景模块没有加载成功，可能是资源网络连接失败。");
+    else if(event.message) show("场景运行遇到问题："+event.message);
+  },true);
+  window.addEventListener("unhandledrejection",function(event){
+    show("场景初始化失败："+String(event.reason||"未知错误"));
+  });
+  window.setTimeout(function(){
+    if(loading&&!loading.classList.contains("hidden")) show("场景启动超时，可能是手机浏览器暂时无法完成渲染。");
+  },12000);
+})();
+</script>
 <script type="module" src="./app.js"></script>
-<script>window.setTimeout(function(){var l=document.getElementById('loading');if(l&&!l.classList.contains('hidden'))document.getElementById('loadError').classList.add('visible')},14000)</script>
 </body>
 </html>
