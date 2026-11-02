@@ -129,7 +129,7 @@ const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
 function pointerX(e){
  const r=frame.getBoundingClientRect(),mobile=window.matchMedia("(max-width:700px)").matches;
  const local=(e.clientX-r.left)/r.width;
- return mobile?local*(4/3)-1/3:local*2-1;
+ return mobile?local*(4/3)-2/3:local*2-1;
 }
 function pointerY(e){const r=frame.getBoundingClientRect();return -((e.clientY-r.top)/r.height*2-1);}
 function resize(){
@@ -148,7 +148,7 @@ canvas.addEventListener("pointerdown",e=>{down=true;moved=false;startX=lastX=e.c
 canvas.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-lastX,dy=e.clientY-lastY;if(Math.abs(e.clientX-startX)+Math.abs(e.clientY-startY)>5)moved=true;azimuth-=dx*.006;elevation=THREE.MathUtils.clamp(elevation+dy*.004,.35,1.12);lastX=e.clientX;lastY=e.clientY;placeCamera();});
 canvas.addEventListener("pointerup",e=>{down=false;if(moved)return;pointer.x=pointerX(e);pointer.y=pointerY(e);raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(clickables,true);const hit=hits.find(h=>h.object.userData.room||h.object.parent?.userData.room);if(hit){const key=hit.object.userData.room||hit.object.parent.userData.room;openRoom(key);}});
 canvas.addEventListener("pointercancel",()=>down=false);
-canvas.addEventListener("pointermove",e=>{if(down)return;pointer.x=(e.clientX-frame.getBoundingClientRect().left)/frame.clientWidth*2-1;pointer.y=-((e.clientY-frame.getBoundingClientRect().top)/frame.clientHeight*2-1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(clickables,true).length>0;canvas.style.cursor=hit?"pointer":"grab";});
+canvas.addEventListener("pointermove",e=>{if(down)return;pointer.x=pointerX(e);pointer.y=pointerY(e);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(clickables,true).length>0;canvas.style.cursor=hit?"pointer":"grab";});
 const roomData={memories:{index:"01 / 04",title:"记忆相册",description:"把那些舍不得忘记的瞬间，好好收在这里。",symbol:"▧"},calendar:{index:"02 / 04",title:"我们的日历",description:"纪念日、计划和普通日子，都可以认真对待。",symbol:"▦"},notes:{index:"03 / 04",title:"留给彼此的话",description:"一些来不及说出口的话，先放在这里。",symbol:"✉"},together:{index:"04 / 04",title:"一起生活",description:"属于我们的角落，慢慢添上喜欢的东西。",symbol:"♡"}};
 const dialog=document.querySelector("#roomDialog");
 function openRoom(key){const d=roomData[key];if(!d)return;document.querySelector("#dialogIndex").textContent=d.index;document.querySelector("#dialogTitle").textContent=d.title;document.querySelector("#dialogDescription").textContent=d.description;document.querySelector("#dialogSymbol").textContent=d.symbol;if(!dialog.open)dialog.showModal();}
