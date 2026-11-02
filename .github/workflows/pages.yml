@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -30,6 +30,13 @@ jobs:
           mkdir -p vendor
           curl --fail --silent --show-error --location https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js --output vendor/three.module.js
           test -s vendor/three.module.js
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add vendor/three.module.js
+          if ! git diff --cached --quiet; then
+            git commit -m "Vendor Three.js for all Pages build paths"
+            git push origin HEAD:main
+          fi
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
