@@ -131,6 +131,62 @@ for(const x of [-4.5,4.5]){const post=round(scene,.22,4.9,.22,mat.trim,[x,2.45,-
 for(const x of [-8.5,0,8.5]){const glow=new THREE.PointLight(0xd7e9ed,2.2,5);glow.position.set(x,3.2,-1.8);scene.add(glow);}
 makeZoneMarker(-9,"GARDEN");makeZoneMarker(0,"LIVING");makeZoneMarker(9,"STUDY");
 
+// Rich front-facing depth pass: a second architectural plane, layered floor details,
+// and foreground objects make the panorama read as one inhabitable world.
+const frontFrame=new THREE.Group();scene.add(frontFrame);
+for(const x of [-13.25,-4.5,4.5,13.25]){
+  round(frontFrame,.16,5.05,.2,mat.woodLight,[x,2.52,3.52],.035);
+}
+for(const y of [.18,5.02]){
+  round(frontFrame,26.55,.13,.2,mat.woodLight,[0,y,3.52],.035);
+}
+round(scene,27,.16,.28,mat.dark,[0,-.23,3.95],.035);
+round(scene,27,.055,.12,mat.cream,[0,-.12,4.04],.018);
+
+// A quiet stepping-stone path leads into the garden.
+const stoneMat=new THREE.MeshStandardMaterial({color:0xe4ebea,roughness:.96});
+for(let i=0;i<5;i++){
+  const stone=new THREE.Mesh(new THREE.CylinderGeometry(.48,.53,.075,32),stoneMat);
+  stone.position.set(-9.15+(i%2?-.28:.22),.025,2.15+i*.72);
+  stone.scale.set(1,.45,.68);stone.castShadow=true;stone.receiveShadow=true;scene.add(stone);
+}
+for(const x of [-5.05,5.05]){
+  const planter=new THREE.Group();planter.position.set(x,0,3.05);scene.add(planter);
+  cyl(planter,.34,.28,.5,mat.cream,[0,.25,0],32);
+  cyl(planter,.35,.35,.055,mat.gold,[0,.52,0],32);
+  cyl(planter,.025,.035,.72,mat.leaf,[0,.86,0],10);
+  for(let i=0;i<5;i++){
+    const a=i*Math.PI*2/5;
+    const leaf=sphere(planter,.15, i%2?mat.leaf:mat.leaf2,[Math.cos(a)*.22,1.05+(i%2)*.12,Math.sin(a)*.2],[.65,2.2,.6]);
+    leaf.rotation.z=-Math.cos(a)*.48;
+  }
+}
+
+// Living room: a layered curtain rail, soft side curtains and a suspended pendant.
+const curtainMat=new THREE.MeshStandardMaterial({color:0xd7e4e5,roughness:.98});
+round(scene,3.15,.075,.11,mat.gold,[-1.95,4.42,-3.55],.025);
+for(const x of [-3.42,-.48]){
+  const curtain=round(scene,.42,2.55,.1,curtainMat,[x,3.05,-3.48],.06);
+  curtain.rotation.z=x< -1.95?-.025:.025;
+  for(let i=0;i<3;i++)round(scene,.025,2.35,.12,mat.cream,[x+(i-1)*.11,3.05,-3.405],.01);
+}
+const pendant=new THREE.Group();pendant.position.set(.1,0,-1.8);scene.add(pendant);
+cyl(pendant,.018,.018,.72,mat.gold,[0,4.45,0],12);
+const pendantShade=new THREE.Mesh(new THREE.ConeGeometry(.42,.34,32),mat.cream);
+pendantShade.position.set(0,4.02,0);pendant.add(pendantShade);
+const pendantGlow=new THREE.PointLight(0xe9f2ef,3.4,5);pendantGlow.position.set(0,3.8,0);pendant.add(pendantGlow);
+
+// Study: visible drawer fronts, handles and a small reading ledge.
+for(const y of [.38,.72]){
+  round(desk,2.15,.27,.08,mat.wood,[0,y,-.56],.025);
+  for(const x of [-.55,.55])cyl(desk,.035,.035,.055,mat.gold,[x,y,-.505],12);
+}
+round(bookcase,2.55,.12,.62,mat.cream,[0,3.48,.02],.035);
+for(const x of [-.96,.96]){
+  round(bookcase,.08,3.4,.58,mat.woodLight,[x,1.72,.08],.025);
+}
+
+
 const zones=[
  {title:"花园",kicker:"01 / THE GARDEN",subtitle:"把日子种成喜欢的样子",x:-9},
  {title:"客厅",kicker:"02 / THE LIVING ROOM",subtitle:"在寻常日子里，好好相处",x:0},
