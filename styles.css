@@ -52,3 +52,5 @@ body.night .world-screen{background:radial-gradient(ellipse at 50% 40%,#514149,#
   .scene-title{top:60px}
   .scene-title h1{font-size:24px}
 }
+
+.scene-title,.drag-hint,.edge-hint,.zone-nav,.bottom-note{display:none!important}
