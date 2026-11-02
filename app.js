@@ -154,12 +154,12 @@ function resize(){const w=screen.clientWidth,h=screen.clientHeight;renderer.setS
 new ResizeObserver(resize).observe(screen);resize();
 let down=false,moved=false,startX=0,lastX=0,startY=0;
 canvas.addEventListener("pointerdown",e=>{down=true;moved=false;startX=lastX=e.clientX;startY=e.clientY;canvas.setPointerCapture(e.pointerId);});
-canvas.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-lastX;if(Math.abs(e.clientX-startX)>7)moved=true;target.x=THREE.MathUtils.clamp(target.x-dx*(window.matchMedia("(max-width:700px)").matches?.045:.035),-9.5,9.5);lastX=e.clientX;placeCamera();});
+canvas.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-lastX;if(Math.abs(e.clientX-startX)>7)moved=true;target.x=THREE.MathUtils.clamp(target.x-dx*(window.matchMedia("(max-width:700px)").matches ? 0.045 : 0.035),-9.5,9.5);lastX=e.clientX;placeCamera();});
 canvas.addEventListener("pointerup",e=>{down=false;if(moved){const nearest=zones.reduce((best,z,i)=>Math.abs(z.x-target.x)<Math.abs(zones[best].x-target.x)?i:best,0);goZone(nearest);return;}const r=canvas.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*2-1;pointer.y=-((e.clientY-r.top)/r.height*2-1);raycaster.setFromCamera(pointer,camera);const found=raycaster.intersectObjects(clickables,true).find(h=>h.object.userData.room);if(found)openRoom(found.object.userData.room);});
 canvas.addEventListener("pointercancel",()=>down=false);
 canvas.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){target.x=THREE.MathUtils.clamp(target.x+e.deltaX*.018,-9.5,9.5);placeCamera();}}, {passive:true});
 let night=localStorage.getItem("lune-theme")==="night";
-function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x858094:0xfff4ee);hemi.groundColor.set(night?0x342b3b:0x76616a);sun.color.set(night?0xb7b0d0:0xffe6d4);sun.intensity=night?1.45:3;fill.intensity=night?1.65:1.1;sunDisc.material.color.set(night?0xe3d9f5:0xffdfac);scene.fog.color.set(night?0x302831:0xd9ccca);renderer.toneMappingExposure=night?.92:1.08;}
+function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x858094:0xfff4ee);hemi.groundColor.set(night?0x342b3b:0x76616a);sun.color.set(night?0xb7b0d0:0xffe6d4);sun.intensity=night?1.45:3;fill.intensity=night?1.65:1.1;sunDisc.material.color.set(night?0xe3d9f5:0xffdfac);scene.fog.color.set(night?0x302831:0xd9ccca);renderer.toneMappingExposure=night ? 0.92 : 1.08;}
 document.querySelector("#themeToggle").addEventListener("click",()=>{night=!night;localStorage.setItem("lune-theme",night?"night":"day");setTheme();});setTheme();
 function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);}
 animate();
