@@ -25,6 +25,11 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
+      - name: Vendor Three.js for reliable mobile loading
+        run: |
+          mkdir -p vendor
+          curl --fail --silent --show-error --location https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js --output vendor/three.module.js
+          test -s vendor/three.module.js
       - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
