@@ -1,24 +1,29 @@
 # LUNE World
 
-A little world of our own. 一个以手机体验为先的 2.5D 私人小屋。
+A little world of our own. 一个可以走进去、慢慢生活的 2.5D 小世界。
 
-## 当前版本
+## 当前方向
 
-- 原创 CSS 2.5D 房间场景
-- 可点击的记忆、日历、纸条、一起生活入口
-- 昼夜主题切换，并记住上次选择
-- 手机底部快捷导航与响应式场景
-- 原生 HTML / CSS / JavaScript，无构建步骤
+**Hybrid 2.5D · Rich Depth · Mobile First**
+
+- Three.js WebGL 立体房间场景，正交镜头呈现等距空间感
+- 可拖动旋转视角，触摸场景中的物件进入对应空间
+- 真实几何体、材质、灯光、阴影与昼夜照明
+- HTML/CSS 负责文字、导航、弹窗与移动端界面
+- 手机优先布局，昼夜主题偏好保存在本地
+
+## 技术
+
+原生 HTML / CSS / JavaScript + Three.js ES modules。无需打包构建，GitHub Pages 可直接托管。
 
 ## 本地预览
 
-直接打开 `index.html` 即可。
+通过本地静态服务器打开 `index.html`（例如 VS Code Live Server）。Three.js 使用 CDN ES modules。
 
 ## GitHub Pages
 
-在仓库 Settings → Pages 中，将 Source 设为 Deploy from a branch，Branch 选择 `main` / `/(root)` 并保存。部署完成后可通过 GitHub Pages 地址访问。
+仓库使用 GitHub Actions workflow：`.github/workflows/pages.yml`。在 Settings → Pages 中将 Source 设为 **GitHub Actions**。
 
-## 设计方向
+## 设计语言
 
-Hybrid 2.5D · Rich Depth · Mobile First  
-粉灰空间、暗胭脂红细节、柔和光影与可探索的房间。
+粉灰空间、暗胭脂红、温润木质、柔光与清晰的空间层级。LUNE 的场景不再是平面插画，而是可探索的实时 3D 房间。
