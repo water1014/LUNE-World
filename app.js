@@ -5,7 +5,7 @@ const canvas=document.querySelector("#worldCanvas");
 const screen=document.querySelector(".world-screen");
 const loading=document.querySelector("#loading");
 const scene=new THREE.Scene();
-scene.fog=new THREE.Fog(0xd9ccca,24,48);
+scene.fog=new THREE.Fog(0xdce8ed,24,48);
 const camera=new THREE.OrthographicCamera(-7,7,4.5,-4.5,.1,100);
 const target=new THREE.Vector3(0,1.35,0);
 const elevation=.58,azimuth=.68,radius=17;
@@ -15,27 +15,27 @@ const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPr
 renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
-const hemi=new THREE.HemisphereLight(0xfff4ee,0x76616a,2.15);scene.add(hemi);
-const sun=new THREE.DirectionalLight(0xffe6d4,3.0);sun.position.set(-7,12,8);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-18;sun.shadow.camera.right=18;sun.shadow.camera.top=12;sun.shadow.camera.bottom=-12;sun.shadow.bias=-.00025;scene.add(sun);
-const fill=new THREE.DirectionalLight(0xd8c5d0,1.1);fill.position.set(8,7,-8);scene.add(fill);
+const hemi=new THREE.HemisphereLight(0xf5fbff,0x8297a2,2.25);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xf1f8ff,3.05);sun.position.set(-7,12,8);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-18;sun.shadow.camera.right=18;sun.shadow.camera.top=12;sun.shadow.camera.bottom=-12;sun.shadow.bias=-.00025;scene.add(sun);
+const fill=new THREE.DirectionalLight(0xc7dce8,1.25);fill.position.set(8,7,-8);scene.add(fill);
 const mat={
- wall:new THREE.MeshStandardMaterial({color:0xd9c7c2,roughness:.92}),
- side:new THREE.MeshStandardMaterial({color:0xcbb7b5,roughness:.92}),
- floor:new THREE.MeshStandardMaterial({color:0xb99891,roughness:.9}),
- floor2:new THREE.MeshStandardMaterial({color:0xc7aaa2,roughness:.9}),
- trim:new THREE.MeshStandardMaterial({color:0x987a78,roughness:.66}),
- wood:new THREE.MeshStandardMaterial({color:0x98756f,roughness:.62}),
- woodLight:new THREE.MeshStandardMaterial({color:0xb38d83,roughness:.68}),
- sofa:new THREE.MeshStandardMaterial({color:0xa8797e,roughness:.94}),
- blush:new THREE.MeshStandardMaterial({color:0xc49c98,roughness:.94}),
- cream:new THREE.MeshStandardMaterial({color:0xe6d6c8,roughness:.9}),
- wine:new THREE.MeshStandardMaterial({color:0x784752,roughness:.68}),
- leaf:new THREE.MeshStandardMaterial({color:0x71836f,roughness:.86}),
- leaf2:new THREE.MeshStandardMaterial({color:0x8c9a7d,roughness:.88}),
- gold:new THREE.MeshStandardMaterial({color:0xb69a75,metalness:.25,roughness:.42}),
- glass:new THREE.MeshPhysicalMaterial({color:0xb8d1d0,roughness:.2,metalness:.04,transparent:true,opacity:.6}),
- dark:new THREE.MeshStandardMaterial({color:0x59484c,roughness:.7}),
- paper:new THREE.MeshStandardMaterial({color:0xf0e5d9,roughness:.92})
+ wall:new THREE.MeshStandardMaterial({color:0xdce7e9,roughness:.94}),
+ side:new THREE.MeshStandardMaterial({color:0xc8d8dd,roughness:.94}),
+ floor:new THREE.MeshStandardMaterial({color:0xb8cbd0,roughness:.92}),
+ floor2:new THREE.MeshStandardMaterial({color:0xc8d9dc,roughness:.92}),
+ trim:new THREE.MeshStandardMaterial({color:0x829da6,roughness:.7}),
+ wood:new THREE.MeshStandardMaterial({color:0x8b9da0,roughness:.68}),
+ woodLight:new THREE.MeshStandardMaterial({color:0xb2c4c5,roughness:.72}),
+ sofa:new THREE.MeshStandardMaterial({color:0x9eb8c1,roughness:.94}),
+ blush:new THREE.MeshStandardMaterial({color:0xc2d4d8,roughness:.94}),
+ cream:new THREE.MeshStandardMaterial({color:0xe8eff0,roughness:.92}),
+ wine:new THREE.MeshStandardMaterial({color:0x718c98,roughness:.72}),
+ leaf:new THREE.MeshStandardMaterial({color:0x829b8e,roughness:.88}),
+ leaf2:new THREE.MeshStandardMaterial({color:0xa7b9a2,roughness:.9}),
+ gold:new THREE.MeshStandardMaterial({color:0xaab8b6,metalness:.18,roughness:.48}),
+ glass:new THREE.MeshPhysicalMaterial({color:0xc8e1e8,roughness:.18,metalness:.025,transparent:true,opacity:.54}),
+ dark:new THREE.MeshStandardMaterial({color:0x617780,roughness:.72}),
+ paper:new THREE.MeshStandardMaterial({color:0xf1f5f3,roughness:.94})
 };
 const clickables=[];
 function round(parent,w,h,d,material,pos,r=.08){const m=new THREE.Mesh(new RoundedBoxGeometry(w,h,d,3,r),material);m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
@@ -57,7 +57,7 @@ for(let x=-8.8;x<=8.81;x+=8.8){box(scene,.12,5.2,.16,mat.trim,[x,2.6,-3.88]);box
 for(let x=-12.5;x<=12.51;x+=1.8)box(scene,.025,4.55,.035,mat.trim,[x,2.55,-3.86]);
 
 // Garden zone on the left.
-const gardenRug=cyl(scene,2.25,2.25,.045,new THREE.MeshStandardMaterial({color:0xc4b4a4,roughness:1}),[-9,.02,.35],48);gardenRug.scale.set(1,.22,1);
+const gardenRug=cyl(scene,2.25,2.25,.045,new THREE.MeshStandardMaterial({color:0xc4d4d5,roughness:1}),[-9,.02,.35],48);gardenRug.scale.set(1,.22,1);
 makePlant(-11.7,-1.1,1.45);makePlant(-7.1,-1.1,1.18);makePlant(-11.2,2.1,.9);
 const tree=new THREE.Group();tree.position.set(-9.4,0,-1.65);scene.add(tree);
 cyl(tree,.15,.2,2.25,mat.wood,[0,1.1,0],16);
@@ -73,7 +73,7 @@ hit(gardenBench,2.4,1.6,1.1,[0,.85,0],"together");
 const windowG=new THREE.Group();windowG.position.set(-1.95,0,-3.78);scene.add(windowG);
 box(windowG,2.65,2.55,.16,mat.trim,[0,3.05,0]);box(windowG,2.38,2.28,.06,mat.glass,[0,3.05,.09]);
 box(windowG,.07,2.25,.08,mat.cream,[0,3.05,.14]);box(windowG,2.35,.07,.08,mat.cream,[0,3.05,.14]);box(windowG,2.8,.16,.34,mat.wood,[0,1.77,.12]);
-const sunDisc=sphere(windowG,.22,new THREE.MeshBasicMaterial({color:0xffdfac}),[-.58,3.65,.16]);
+const sunDisc=sphere(windowG,.22,new THREE.MeshBasicMaterial({color:0xf4f4e8}),[-.58,3.65,.16]);
 const rug=cyl(scene,2.3,2.3,.05,mat.cream,[.1,.02,.5],56);rug.scale.set(1,.22,1);
 const sofa=new THREE.Group();sofa.position.set(0,0,-.1);scene.add(sofa);
 round(sofa,3.1,.55,1.1,mat.sofa,[0,.65,0],.18);round(sofa,3.1,1.12,.34,mat.sofa,[0,1.2,-.47],.17);
@@ -103,7 +103,7 @@ round(note,.52,.36,.035,mat.paper,[0,0,0],.025);hit(note,.7,.55,.2,[0,0,0],"note
 const lamp=new THREE.Group();lamp.position.set(3.35,0,-.2);scene.add(lamp);
 cyl(lamp,.07,.08,1.75,mat.gold,[0,.9,0],20);cyl(lamp,.43,.43,.1,mat.wood,[0,.08,0],32);
 const shade=new THREE.Mesh(new THREE.CylinderGeometry(.25,.55,.58,32,1,true),mat.cream);shade.position.y=1.95;lamp.add(shade);
-const bulb=new THREE.PointLight(0xffd7a6,13,4);bulb.position.set(0,1.7,0);lamp.add(bulb);
+const bulb=new THREE.PointLight(0xe3eff0,8,4);bulb.position.set(0,1.7,0);lamp.add(bulb);
 makePlant(3.8,2.0,.82);
 
 // Study zone on the right.
@@ -128,7 +128,7 @@ makePlant(12.1,2.5,.9);
 
 // Architectural dividers, soft rugs and little floor lights establish each room as a connected place.
 for(const x of [-4.5,4.5]){const post=round(scene,.22,4.9,.22,mat.trim,[x,2.45,-3.75],.05);post.castShadow=true;}
-for(const x of [-8.5,0,8.5]){const glow=new THREE.PointLight(0xffd9b6,2.8,5);glow.position.set(x,3.2,-1.8);scene.add(glow);}
+for(const x of [-8.5,0,8.5]){const glow=new THREE.PointLight(0xd7e9ed,2.2,5);glow.position.set(x,3.2,-1.8);scene.add(glow);}
 makeZoneMarker(-9,"GARDEN");makeZoneMarker(0,"LIVING");makeZoneMarker(9,"STUDY");
 
 const zones=[
@@ -159,7 +159,7 @@ canvas.addEventListener("pointerup",e=>{down=false;if(moved){const nearest=zones
 canvas.addEventListener("pointercancel",()=>down=false);
 canvas.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){target.x=THREE.MathUtils.clamp(target.x+e.deltaX*.018,-9.5,9.5);placeCamera();}}, {passive:true});
 let night=localStorage.getItem("lune-theme")==="night";
-function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x858094:0xfff4ee);hemi.groundColor.set(night?0x342b3b:0x76616a);sun.color.set(night?0xb7b0d0:0xffe6d4);sun.intensity=night?1.45:3;fill.intensity=night?1.65:1.1;sunDisc.material.color.set(night?0xe3d9f5:0xffdfac);scene.fog.color.set(night?0x302831:0xd9ccca);renderer.toneMappingExposure=night ? 0.92 : 1.08;}
+function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x858094:0xf5fbff);hemi.groundColor.set(night?0x342b3b:0x8297a2);sun.color.set(night?0xb7b0d0:0xf1f8ff);sun.intensity=night?1.45:3.05;fill.intensity=night?1.65:1.25;sunDisc.material.color.set(night?0xe3d9f5:0xf4f4e8);scene.fog.color.set(night?0x302831:0xdce8ed);renderer.toneMappingExposure=night ? 0.92 : 1.04;}
 document.querySelector("#themeToggle").addEventListener("click",()=>{night=!night;localStorage.setItem("lune-theme",night?"night":"day");setTheme();});setTheme();
 function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);}
 animate();
