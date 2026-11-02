@@ -26,3 +26,29 @@ dialog{width:min(390px,calc(100% - 34px));padding:0;border:1px solid #ffffff90;b
 body.night .world-screen{background:radial-gradient(ellipse at 50% 40%,#514149,#292329 76%)}body.night .scene-wash{background:linear-gradient(180deg,#211b2455,transparent 35%,#160f1855),radial-gradient(ellipse at center,transparent 42%,#08070b66)}body.night .scene-title h1{color:#f0e4e1}body.night .scene-title p,body.night .bottom-note,body.night .drag-hint{color:#d0b9bd}body.night .drag-hint,body.night .zone-nav,body.night .theme-toggle{background:rgba(48,37,44,.68);border-color:#ffffff22}body.night .zone-nav button{color:#b9a3a7}body.night .zone-nav button.active{color:#f0c8cc}body.night .zone-nav button.active i{background:#d69ca5}body.night .theme-toggle .sun{display:none}body.night .theme-toggle .moon{display:inline}
 @media(max-width:700px){.topbar{top:max(13px,env(safe-area-inset-top));left:17px;right:17px}.brand-mark{width:30px;height:30px}.live-label{font-size:6px;letter-spacing:.12em}.top-right{gap:10px}.theme-toggle{width:33px;height:33px}.scene-title{top:clamp(76px,11vh,100px);left:23px}.scene-title h1{font-size:31px}.scene-title p{font-size:10px}.drag-hint{bottom:104px;font-size:8px;padding:8px 12px}.zone-nav{bottom:max(23px,env(safe-area-inset-bottom));gap:22px;padding:10px 19px}.zone-nav button{font-size:10px}.bottom-note{bottom:10px;font-size:6px;letter-spacing:.14em}.edge-hint{font-size:34px}.left-hint{left:5px}.right-hint{right:5px}}
 @media(max-height:650px) and (min-width:701px){.scene-title{top:78px}.drag-hint{bottom:80px}.zone-nav{bottom:20px}.bottom-note{bottom:9px}}
+
+
+/* Immersive full-bleed world: the scene reaches every screen edge. */
+.world-screen{inset:0;width:100vw;height:100dvh;min-height:100%;border:0;border-radius:0}
+#worldCanvas{inset:0;width:100%;height:100%;object-fit:cover}
+.scene-wash{background:linear-gradient(180deg,rgba(247,252,253,.24),transparent 19%,transparent 82%,rgba(57,83,94,.08)),radial-gradient(ellipse at center,transparent 58%,rgba(69,100,111,.055) 100%)}
+.edge-hint{display:none}
+.bottom-note{display:none}
+.topbar{top:max(12px,env(safe-area-inset-top));left:18px;right:18px}
+.scene-title{top:clamp(68px,10vh,96px);left:clamp(20px,5vw,58px)}
+.scene-title h1{margin:7px 0 2px}
+.drag-hint{bottom:calc(78px + env(safe-area-inset-bottom));}
+.zone-nav{bottom:max(14px,env(safe-area-inset-bottom));}
+@media(max-width:700px){
+  .world-screen{height:100dvh;min-height:100dvh}
+  .scene-title{top:72px;left:20px}
+  .scene-title h1{font-size:27px}
+  .scene-title p{font-size:9px}
+  .drag-hint{display:none}
+  .zone-nav{bottom:max(12px,env(safe-area-inset-bottom));gap:25px;padding:10px 21px}
+  .topbar{top:max(10px,env(safe-area-inset-top))}
+}
+@media(max-height:560px){
+  .scene-title{top:60px}
+  .scene-title h1{font-size:24px}
+}
