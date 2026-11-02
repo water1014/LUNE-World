@@ -7,7 +7,8 @@ const scene=new THREE.Scene();
 scene.fog=new THREE.Fog(0xdce8ed,24,48);
 const camera=new THREE.OrthographicCamera(-7,7,4.5,-4.5,.1,100);
 const target=new THREE.Vector3(0,1.35,0);
-const elevation=.58,azimuth=.68,radius=17;
+// Front-facing orthographic camera: straight-on view, with depth kept in the geometry and lighting.
+const elevation=0,azimuth=0,radius=17;
 function placeCamera(){camera.position.set(target.x+Math.sin(azimuth)*Math.cos(elevation)*radius,target.y+Math.sin(elevation)*radius,Math.cos(azimuth)*Math.cos(elevation)*radius);camera.lookAt(target);camera.updateProjectionMatrix();}
 placeCamera();
 const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:"high-performance"});
