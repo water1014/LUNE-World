@@ -27,3 +27,5 @@ A little world of our own. 一个可以走进去、慢慢生活的 2.5D 小世�
 ## 设计语言
 
 粉灰空间、暗胭脂红、温润木质、柔光与清晰的空间层级。LUNE 的场景不再是平面插画，而是可探索的实时 3D 房间。
+
+> Deployment note: Three.js is vendored in `vendor/three.module.js` so every GitHub Pages build path can load the scene without a third-party CDN request.
