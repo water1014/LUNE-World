@@ -1,25 +1,49 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#e8dfdd"><meta name="description" content="LUNE，一个可以走进去的小小世界。">
-<title>LUNE · A little world of our own</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#d9ccca">
+<meta name="description" content="LUNE，一个可以左右漫游的小小世界。">
+<title>LUNE · Our little world</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="./styles.css">
-</head>
-<body>
-<div class="grain"></div><main class="shell">
-<header class="topbar"><a class="brand" href="#"><span class="brand-seal">L</span><span>LUNE<small>WORLD No. 001</small></span></a><div class="top-actions"><span class="status"><i></i> A WORLD FOR TWO</span><button id="themeToggle" class="theme-button" aria-label="切换昼夜"><span class="day">☼</span><span class="night">☾</span></button></div></header>
-<section class="intro"><div class="eyebrow">A LITTLE WORLD OF OUR OWN <b>✳</b></div><h1>不是旁观一间屋子。<br><em>是走进去生活。</em></h1><p>拖动视角，看看这个小小的世界。点击物件，进入属于它的房间。</p></section>
-<section class="world-wrap"><div class="scene-topline"><span><b>01</b> / THE HOUSE</span><span>DRAG TO EXPLORE <i>↗</i></span></div>
-<div class="world-frame" id="worldFrame"><div class="world-vignette"></div><canvas id="worldCanvas" aria-label="可旋转探索的 LUNE 立体小屋"></canvas><div class="loading" id="loading"><span class="loading-orbit"></span><small>正在点亮小屋…</small></div><div class="scene-caption"><span class="caption-dot"></span><span id="sceneHint">一间正在等待生活发生的小屋</span></div><div class="drag-cue"><span>↔</span> 拖动旋转</div></div>
-<div class="scene-bottom"><span>THE ROOM IS YOURS TO SHAPE</span><span>✦ &nbsp; TAP AN OBJECT</span></div></section>
-<section class="rooms"><div class="rooms-head"><div><span class="eyebrow">STEP INSIDE</span><h2>屋子里的小小入口</h2></div><span class="rooms-count">04 SPACES</span></div><div class="room-links"><button data-room="memories"><span class="room-no">01</span><span class="room-symbol">▧</span><span class="room-name">记忆相册<small>收好每个瞬间</small></span><b>↗</b></button><button data-room="calendar"><span class="room-no">02</span><span class="room-symbol">▦</span><span class="room-name">我们的日历<small>把日子圈起来</small></span><b>↗</b></button><button data-room="notes"><span class="room-no">03</span><span class="room-symbol">✉</span><span class="room-name">留给彼此<small>一些没说完的话</small></span><b>↗</b></button><button data-room="together"><span class="room-no">04</span><span class="room-symbol">♡</span><span class="room-name">一起生活<small>共同拥有的角落</small></span><b>↗</b></button></div></section>
-<footer><span>MADE OF LITTLE MOMENTS</span><span>© LUNE WORLD</span></footer></main>
-<nav class="mobile-dock"><button data-room="memories"><span>▧</span><small>记忆</small></button><button data-room="calendar"><span>▦</span><small>日历</small></button><button id="homeButton" class="dock-home"><span>⌂</span><small>小屋</small></button><button data-room="notes"><span>✉</span><small>纸条</small></button><button data-room="together"><span>♡</span><small>我们</small></button></nav>
-<dialog id="roomDialog"><div class="dialog-head"><span>LUNE / PRIVATE SPACE</span><button id="closeDialog">×</button></div><div class="dialog-body"><span class="dialog-index" id="dialogIndex">01 / 04</span><h2 id="dialogTitle">记忆相册</h2><p id="dialogDescription"></p><div class="empty-room"><span id="dialogSymbol">▧</span><small>THIS SPACE IS WAITING FOR YOU</small></div><small class="dialog-note">这里还空着，等你慢慢放进生活。</small></div></dialog>
 <script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
 <script type="importmap-shim">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"}}</script>
+</head>
+<body>
+<main class="world-screen">
+  <canvas id="worldCanvas" aria-label="LUNE 全屏 2.5D 世界，可左右滑动探索"></canvas>
+  <div class="scene-wash"></div>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="LUNE 首页"><span class="brand-mark">L</span><span class="brand-word">LUNE<small>OUR LITTLE WORLD</small></span></a>
+    <div class="top-right"><span class="live-label"><i></i> A WORLD FOR TWO</span><button id="themeToggle" class="theme-toggle" aria-label="切换昼夜"><span class="sun">☼</span><span class="moon">☾</span></button></div>
+  </header>
+  <section class="scene-title">
+    <span class="kicker" id="zoneKicker">01 / THE GARDEN</span>
+    <h1 id="zoneTitle">花园</h1>
+    <p id="zoneSubtitle">把日子种成喜欢的样子</p>
+  </section>
+  <div class="edge-hint left-hint" aria-hidden="true">‹</div>
+  <div class="edge-hint right-hint" aria-hidden="true">›</div>
+  <div class="drag-hint"><span>↔</span> 左右滑动，去别的角落看看</div>
+  <nav class="zone-nav" aria-label="空间导航">
+    <button data-zone="0"><i></i><span>花园</span></button>
+    <button data-zone="1" class="active"><i></i><span>客厅</span></button>
+    <button data-zone="2"><i></i><span>书房</span></button>
+  </nav>
+  <div class="bottom-note"><span>MADE OF LITTLE MOMENTS</span><span id="zoneCounter">02 — 03</span></div>
+  <div id="loading" class="loading"><span class="loader"></span><span>正在点亮这个小世界…</span></div>
+  <div id="loadError" class="load-error">小世界暂时没有加载成功。请检查网络后重新打开。</div>
+  <dialog id="roomDialog">
+    <div class="dialog-top"><span>LUNE / PRIVATE SPACE</span><button id="closeDialog" aria-label="关闭">×</button></div>
+    <div class="dialog-content"><span id="dialogIndex" class="dialog-index">01 / 04</span><h2 id="dialogTitle">记忆相册</h2><p id="dialogDescription"></p><div class="dialog-art" id="dialogSymbol">♡</div><small>这里还空着，等你慢慢放进生活。</small></div>
+  </dialog>
+</main>
+<script async src="https://cdn.jsdelivr.net/npm/es-module-shims@1.10.0/dist/es-module-shims.js"></script>
 <script type="module-shim" src="./app.js"></script>
-</body></html>
+<script>window.setTimeout(function(){var l=document.getElementById('loading');if(l&&!l.classList.contains('hidden'))document.getElementById('loadError').classList.add('visible')},14000)</script>
+</body>
+</html>
