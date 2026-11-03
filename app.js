@@ -160,9 +160,6 @@ const deskGlow=new THREE.PointLight(0xf2cdb8,2.8,5);deskGlow.position.set(-1.05,
 target.set(0,4.05,0);placeCamera();
 
 
-document.querySelector("#zoneTitle").textContent="书桌";
-document.querySelector("#zoneKicker").textContent="LUNE / THE DESK";
-document.querySelector("#zoneSubtitle").textContent="留一盏灯，写下今天";
 const roomData={
  memories:{index:"01 / 04",title:"记忆相册",description:"把那些舍不得忘记的瞬间，好好收在这里。",symbol:"▧"},
  calendar:{index:"02 / 04",title:"我们的日历",description:"纪念日、计划和普通日子，都可以认真对待。",symbol:"▦"},
