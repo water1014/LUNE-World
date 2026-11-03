@@ -127,6 +127,83 @@ const flame=sphere(0,.83,0,.09,.19,.08,mat("#f4c98c"),candle);flame.material.emi
 // Room rug and fine brass details
 box(0,.49,2.75,5.8,.025,1.5,mat("#bda6a3"));
 for(let i=0;i<18;i++)line([[-2.7+i*.32,.51,2.05],[-2.7+i*.32,.51,3.45]],.006,mat("#e2d1c8"));
+
+/* Dense atelier dressing: layered architecture, small keepsakes and tabletop life */
+const plaster=mat("#b8b1bd"), trim=mat("#e7d9d6"), shadowWood=mat("#755e61"), linen=mat("#d8c9cc"), darkBlue=mat("#536778"), paper=mat("#f2e9df"), ink=mat("#92727a");
+function torus(x,y,z,rx,ry,rz,m,parent=root){const o=mesh(new THREE.TorusGeometry(rx,.035,8,48),m,x,y,z,parent);o.scale.y=ry/rx;o.rotation.z=rz;return o}
+// Architectural depth: window casing, sill, side pilasters and crown moulding
+box(0,5.82,-3.18,8.15,.18,.38,trim);
+box(0,-.02,-3.12,8.15,.22,.42,trim);
+for(const x of [-4.02,4.02]){box(x,2.85,-3.12,.2,5.85,.42,trim);box(x,2.85,-2.88,.08,5.65,.08,brass)}
+box(0,5.65,-2.92,7.95,.12,.12,brass);
+for(let i=0;i<9;i++){
+ const x=-3.8+i*.95;
+ const fold=line([[x,5.45,-2.42],[x-.12,4.1,-2.42],[x+.1,2.4,-2.42],[x-.08,.55,-2.42]],.045,mat(i%2?"#c7b8c2":"#e9dce0"));
+}
+// Wall picture frames and a narrow floating shelf
+box(-5.05,3.95,-3.1,1.35,1.7,.14,wood);
+box(-5.05,3.95,-3.0,1.17,1.5,.05,ivory);
+box(-5.05,3.95,-2.96,1.02,1.32,.035,mat("#aab9c5"));
+sphere(-5.28,4.13,-2.92,.2,.2,.025,mat("#e8d6c4"));
+const wallHill=mesh(new THREE.ConeGeometry(.42,.7,4),mat("#718895"),-4.82,3.68,-2.91);wallHill.rotation.z=Math.PI;
+box(4.95,3.5,-3.08,2.2,.13,.55,wood);
+for(let i=0;i<4;i++){const b=box(4.35+i*.35,3.83,-3.08,.28,.62,.38,mat(["#6d5967","#b28c91","#d4b8a9","#657b88"][i]));b.rotation.z=(i-1)*.035}
+sphere(5.45,4.12,-3.08,.22,.22,.22,glass);
+for(let i=0;i<3;i++){const p=sphere(5.2+i*.18,4.32,-3.08,.09,.1,.09,mat("#d9b8bf"));}
+// Table edge, apron and visible turned legs
+box(0,-.04,3.85,12.25,.24,.22,shadowWood);
+for(const x of [-5.45,5.45])for(const z of [-2.7,3.1]){
+ const leg=cylinder(x,-.86,z,.16,.22,1.65,wood,root,24);leg.position.y=-.86;
+ cylinder(x,-.1,z,.24,.24,.12,brass,root,24);
+}
+// Layered runner and lace-like border
+box(0,.475,2.55,7.4,.035,2.15,linen);
+for(let i=0;i<20;i++){const x=-3.5+i*.37;line([[x,.5,1.55],[x+.08,.5,2.55],[x,.5,3.55]],.009,mat("#f3e6e0"))}
+for(let i=0;i<24;i++){const z=1.58+i*.085;line([[-3.7,.5,z],[3.7,.5,z]],.006,mat("#b79ca5"))}
+// A little desk lamp, with curved neck and warm shade
+const lamp=new THREE.Group();root.add(lamp);lamp.position.set(-5.05,.5,1.15);
+cylinder(0,.08,0,.48,.48,.14,brass,lamp);
+line([[0,.15,0],[.05,.9,0],[.48,1.42,0],[.92,1.48,0]],.065,brass,lamp);
+const shade=mesh(new THREE.ConeGeometry(.48,.58,48,1,true),mat("#d7c2b5",.42,.12),.92,1.42,0,lamp);shade.rotation.z=-Math.PI/2;
+const bulb=sphere(1.02,1.18,0,.13,.13,.13,mat("#ffe1a8"),lamp);bulb.material.emissive=new THREE.Color("#ffc879");bulb.material.emissiveIntensity=.65;
+const lampLight=new THREE.PointLight("#ffd7a1",nightMode?25:8,5);lampLight.position.set(-4.1,2.2,1.1);root.add(lampLight);
+// Teacup and saucer
+const cup=new THREE.Group();root.add(cup);cup.position.set(5.05,.5,-1.85);
+cylinder(0,.08,0,.42,.48,.12,ivory,cup);const cupBody=mesh(new THREE.CylinderGeometry(.27,.38,.48,48,1,true),ivory,0,.36,0,cup);cupBody.material.side=THREE.DoubleSide;
+torus(.48,.38,0,.22,.22,0,brass,cup);
+cylinder(0,.61,0,.27,.27,.025,mat("#6b555d"),cup,48);
+// Loose postcards, note scraps and envelopes create overlapping planes
+function paperCard(x,z,w,h,angle,color=paper){const g=new THREE.Group();root.add(g);g.position.set(x,.535,z);g.rotation.y=angle;g.rotation.z=(Math.random()-.5)*.045;box(0,.025,0,w,.045,h,color,g);for(let i=0;i<3;i++)box(-w*.12,.052,-h*.18+i*.12,w*.52,.008,.012,ink,g);return g}
+paperCard(-.25,2.85,1.2,.82,-.22,mat("#eee2dc"));
+paperCard(1.15,-1.55,1.05,.72,.32,mat("#f4eadd"));
+paperCard(-3.15,-1.75,.9,.65,-.18,mat("#e7d9d4"));
+paperCard(2.55,2.7,1.05,.72,.12,mat("#f0e6dc"));
+// Fountain pen with metal nib, laid diagonally across a note
+const pen=new THREE.Group();root.add(pen);pen.position.set(1.85,.62,2.35);pen.rotation.y=.12;pen.rotation.z=-.22;
+cylinder(0,0,0,.055,.055,1.45,wine,pen,24).rotation.x=Math.PI/2;
+const penCap=cylinder(0,.03,-.72,.075,.075,.22,brass,pen,24);penCap.rotation.x=Math.PI/2;
+const nib=mesh(new THREE.ConeGeometry(.075,.22,16),brass,0,0,.83,pen);nib.rotation.x=Math.PI/2;
+// Open keepsake book with pages and ribbon
+const openBook=new THREE.Group();root.add(openBook);openBook.position.set(-1.15,.55,-1.72);openBook.rotation.y=-.18;
+box(-.62,.06,0,1.25,.09,1.45,mat("#79535d"),openBook);
+box(.62,.06,0,1.25,.09,1.45,mat("#79535d"),openBook);
+box(-.62,.12,0,1.16,.045,1.36,paper,openBook);
+box(.62,.12,0,1.16,.045,1.36,paper,openBook);
+for(let i=0;i<7;i++){box(-.62,.15,-.42+i*.13,.76,.008,.012,ink,openBook);box(.62,.15,-.42+i*.13,.76,.008,.012,ink,openBook)}
+line([[0,.19,.55],[.12,.2,.8],[.18,.2,1.02]],.025,wine,openBook);
+// Pressed flowers and petals scattered near the journal
+for(let i=0;i<13;i++){const a=i*2.4,r=.25+(i%4)*.16;const pet=sphere(-3.55+Math.cos(a)*r,.55,1.8+Math.sin(a)*r,.12,.025,.055,mat(i%2?"#c18e9a":"#ead1d1"));pet.rotation.y=a;}
+// A small framed instant photo leaning against the window sill
+const instant=new THREE.Group();root.add(instant);instant.position.set(1.35,.5,-2.25);instant.rotation.y=-.12;
+box(0,.58,0,.88,1.05,.1,ivory,instant);
+box(0,.67,.06,.72,.72,.025,mat("#a7b8c1"),instant);
+sphere(-.16,.82,.09,.13,.16,.025,mat("#d9b4a6"),instant);
+sphere(.15,.82,.09,.13,.16,.025,mat("#e5c6b5"),instant);
+box(0,.18,.08,.48,.025,.02,ink,instant);
+// Fine inlaid brass lines on the desk and decorative drawer knobs
+for(const x of [-4.8,-2.4,0,2.4,4.8]){line([[x,.47,-2.8],[x+.18,.47,-2.65],[x+.3,.47,-2.5]],.012,brass)}
+for(const x of [-2.4,0,2.4])sphere(x,-.02,3.98,.07,.07,.04,brass);
+
 const clickable=[
  [cal,"calendar"],[album,"memories"],[letter,"letters"],[player,"music"],[portrait,"together"],[books,"notes"],[globe,"settings"],[hour,"settings"],[candle,"settings"]
 ];
