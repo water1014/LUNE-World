@@ -40,3 +40,31 @@ if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
  });
  scroller.addEventListener("pointerleave",()=>room.style.filter="none");
 }
+
+/* Object interaction: small physical response, never a flat dashboard click */
+const scene=document.querySelector("#room");
+const objects=[...document.querySelectorAll(".thing")];
+objects.forEach((object,index)=>{
+ object.style.setProperty("--object-order",index);
+ object.addEventListener("pointerdown",()=>object.classList.add("pressed"));
+ ["pointerup","pointercancel","pointerleave"].forEach(type=>object.addEventListener(type,()=>object.classList.remove("pressed")));
+});
+if(window.matchMedia("(hover:hover) and (pointer:fine)").matches){
+ scene.addEventListener("pointermove",event=>{
+  const r=scene.getBoundingClientRect();
+  const px=(event.clientX-r.left)/r.width-.5;
+  const py=(event.clientY-r.top)/r.height-.5;
+  scene.style.setProperty("--light-x",(50+px*8)+"%");
+  scene.style.setProperty("--light-y",(35+py*7)+"%");
+ });
+}
+const style=document.createElement("style");
+style.textContent=
+'.thing.pressed{filter:brightness(1.08) drop-shadow(0 25px 18px #49363a66)!important}'+
+'.thing:focus-visible{outline:2px solid #a87883;outline-offset:5px}'+
+'.overlay.open .room-card{animation:panel-arrive .42s cubic-bezier(.2,.85,.25,1) both}'+
+'@keyframes panel-arrive{0%{transform:translateY(55px) scale(.985);opacity:.7}100%{transform:translateY(0) scale(1);opacity:1}}'+
+'body.night .thing{filter:drop-shadow(0 14px 14px #080a1a66)}'+
+'body.night .scene-tip{background:#343341bb;color:#e6d9dd;border-color:#ffffff25}'+
+'body.night .tabletop:after{background:linear-gradient(#65545b,#403943)}';
+document.head.append(style);
