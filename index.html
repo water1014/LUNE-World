@@ -3,9 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta http-equiv="refresh" content="0;url=./windowsill/index.html">
-<title>LUNE · 赴约窗台</title>
-<script>location.replace("./windowsill/index.html"+location.search+location.hash);</script>
+<meta name="theme-color" content="#d9d0cf">
+<title>LUNE · 我们的日常</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./styles.css">
 </head>
-<body><p>正在进入 LUNE 的 3D 窗台场景… <a href="./windowsill/index.html">如果没有自动跳转，请点这里</a></p></body>
+<body>
+<main class="app-shell">
+  <header class="topbar">
+    <a class="wordmark" href="#" aria-label="LUNE 首页"><span class="mark">L</span><span>LUNE<small>OUR LITTLE WORLD</small></span></a>
+    <div class="top-meta"><span class="live-dot"></span><span id="todayLabel">A LITTLE MOMENT TOGETHER</span></div>
+    <button class="theme-button" id="themeToggle" aria-label="切换昼夜"><span id="themeIcon">☾</span></button>
+  </header>
+  <section class="intro">
+    <p class="eyebrow">A PLACE FOR THE TWO OF US</p>
+    <h1>把日子，慢慢放在一起。</h1>
+    <p class="subline">Somewhere between little things and lovely days.</p>
+  </section>
+  <section class="viewport" id="viewport" aria-label="可互动的桌面空间">
+    <div class="desk-scene" id="deskScene">
+      <div class="scene-shadow"></div>
+      <div class="paper-base"></div>
+      <div class="tape tape-one"></div><div class="tape tape-two"></div>
+      <button class="object calendar" data-room="calendar" aria-label="打开日历">
+        <span class="object-kicker">OUR DAYS · 2026</span><span class="cal-month">NOVEMBER</span>
+        <span class="cal-grid"><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i><i>S</i><i>S</i>
+        <b></b><b></b><b></b><b></b><b></b><b></b><b></b>
+        <b>2</b><b>3</b><b>4</b><b>5</b><b>6</b><b>7</b><b>8</b>
+        <b>9</b><b>10</b><b>11</b><b>12</b><b>13</b><b>14</b><b>15</b>
+        <b>16</b><b>17</b><b>18</b><b>19</b><b>20</b><b>21</b><b>22</b>
+        <b>23</b><b>24</b><b>25</b><b>26</b><b>27</b><b>28</b><b>29</b></span>
+        <span class="cal-heart">♥</span><span class="cal-note">days worth keeping</span>
+      </button>
+      <button class="object photo-stack" data-room="memories" aria-label="打开相册">
+        <span class="photo photo-back"></span><span class="photo photo-mid"></span>
+        <span class="photo photo-front"><span class="photo-sun"></span><span class="photo-hill hill-a"></span><span class="photo-hill hill-b"></span><span class="photo-caption">a day to remember</span></span>
+        <span class="photo-label">MEMORY No. 018</span>
+      </button>
+      <button class="object letter" data-room="letters" aria-label="打开信件">
+        <span class="letter-seal">L</span><span class="letter-top">A LETTER FOR YOU</span><span class="letter-lines"></span><span class="letter-sign">with love, always.</span>
+      </button>
+      <button class="object music" data-room="music" aria-label="打开音乐">
+        <span class="music-top">NOW PLAYING</span><span class="vinyl"><i></i></span><span class="music-info"><b>慢慢喜欢你</b><small>我们的收藏曲目</small></span><span class="equalizer"><i></i><i></i><i></i><i></i></span>
+      </button>
+      <button class="object polaroid" data-room="together" aria-label="打开我们的空间">
+        <span class="avatar-pair"><i>♡</i><i>♡</i></span><span class="polaroid-title">YOU & ME</span><span class="polaroid-caption">two little worlds, one home</span>
+      </button>
+      <button class="object notebook" data-room="notes" aria-label="打开手账">
+        <span class="notebook-spine"></span><span class="notebook-label">TODAY'S NOTES</span><span class="notebook-title">一些小小的<br>心事与念想</span><span class="notebook-date">11 / 03</span><span class="notebook-flower">✳</span>
+      </button>
+      <button class="object key-object" data-room="settings" aria-label="打开设置"><span class="key-ring"></span><span class="key-stem"></span><span class="key-tooth"></span><span class="key-caption">OUR KEY</span></button>
+      <div class="scene-stamp">LUNE <span>·</span> EST. 2026</div>
+      <div class="scene-hint"><span class="hint-dot"></span>轻触物件，去看看里面</div>
+    </div>
+  </section>
+  <footer class="bottom-note"><span>MADE OF LITTLE THINGS</span><span class="bottom-heart">♡</span><span>KEPT WITH LOVE</span></footer>
+</main>
+<div class="room-overlay" id="roomOverlay" aria-hidden="true">
+  <button class="overlay-backdrop" id="overlayBackdrop" aria-label="关闭"></button>
+  <section class="room-panel" role="dialog" aria-modal="true" aria-labelledby="roomTitle">
+    <div class="panel-grip"></div><button class="panel-close" id="panelClose" aria-label="关闭">×</button>
+    <p class="panel-index" id="roomIndex">01 / 07 · YOUR LITTLE SPACE</p><div class="panel-symbol" id="roomSymbol">♡</div>
+    <h2 id="roomTitle">我们的空间</h2><p id="roomDescription">把喜欢的日常，认真收藏起来。</p>
+    <div class="panel-rule"></div><p class="panel-foot" id="roomFoot">THIS SPACE IS WAITING FOR YOU</p>
+  </section>
+</div>
+<script type="module" src="./app.js"></script>
+</body>
 </html>
