@@ -29,7 +29,7 @@ const wood=mat("#a9867e"), woodLight=mat("#d3b7a9"), ivory=mat("#f0e8df"), wine=
 const root=new THREE.Group();scene3.add(root);
 function mesh(g,m,x,y,z,parent=root){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
 function box(x,y,z,w,h,d,m,parent=root,r=0){let o=mesh(new THREE.BoxGeometry(w,h,d),m,x,y,z,parent);if(r)o.rotation.y=r;return o}
-function sphere(x,y,z,sx,sy,sz,m,parent=root){return mesh(new THREE.SphereGeometry(1,32,24),m,x,y,z,parent).scale.set(sx,sy,sz)}
+function sphere(x,y,z,sx,sy,sz,m,parent=root){const o=mesh(new THREE.SphereGeometry(1,32,24),m,x,y,z,parent);o.scale.set(sx,sy,sz);return o}
 function cylinder(x,y,z,rt,rb,h,m,parent=root,seg=48){return mesh(new THREE.CylinderGeometry(rt,rb,h,seg),m,x,y,z,parent)}
 function line(points,r,m,parent=root){const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)));return mesh(new THREE.TubeGeometry(curve,48,r,8,false),m,0,0,0,parent)}
 function group(x,y,z,parent=root){const g=new THREE.Group();g.position.set(x,y,z);parent.add(g);return g}
