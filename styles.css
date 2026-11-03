@@ -48,3 +48,34 @@
 .room-card{border:1px solid #fff9;box-shadow:0 -18px 55px #2d202566}
 .scene-tip{padding:10px 15px;border:1px solid #fff7;border-radius:30px;background:#f4eae5a8;backdrop-filter:blur(14px);box-shadow:0 8px 20px #47363a18}
 @media(max-width:700px){.room-scroll{height:590px}.room{transform:scale(.84);transform-origin:top left}.room-scroll{background:linear-gradient(180deg,#aebed0,#bba8a1)}}
+
+
+/* Camera correction: match the reference's elevated, oblique tabletop view */
+.room{width:1536px;height:768px;overflow:hidden;background:linear-gradient(180deg,#aabbd1 0 48%,#d7c4bb 48% 100%);perspective:1250px;perspective-origin:50% 43%}
+.wall{height:390px;transform:none;background:linear-gradient(105deg,#a8a1b2 0%,#d8d0d9 34%,#91a9c8 62%,#e6d9df 100%)}
+.window{right:190px;top:-18px;width:690px;height:405px;transform:perspective(1200px) rotateY(-7deg) rotateX(1deg);transform-origin:center bottom}
+.sky{background:linear-gradient(180deg,#87a9d5 0%,#b7c8e2 48%,#d9d9e3 75%,#a8becd 100%)}
+.window-bar.v{left:53%;width:16px}
+.window-bar.h{top:60%;height:14px}
+.curtain{height:405px;width:210px;filter:drop-shadow(12px 7px 12px #45405b44);background:linear-gradient(90deg,#d9d1dfed 0%,#f5edf0db 28%,#c9c3d6a8 62%,#f7edf0a8 100%)}
+.curtain-left{clip-path:polygon(0 0,100% 0,90% 25%,78% 58%,100% 100%,0 100%)}
+.curtain-right{width:220px;clip-path:polygon(18% 0,100% 0,100% 100%,0 100%,20% 64%,8% 30%)}
+.tabletop{top:385px;bottom:-28px;transform:perspective(1050px) rotateX(11deg) scaleX(1.04);transform-origin:50% 0%;background:linear-gradient(165deg,#d9c9d2 0%,#cdbbc7 43%,#a997a8 100%);box-shadow:inset 0 18px 25px #51445d28,0 25px 50px #342b4255}
+.tabletop:before{background:repeating-linear-gradient(3deg,transparent 0 31px,#81718b1c 32px,transparent 34px 65px),linear-gradient(90deg,#fff2 0 1px,transparent 1px 100%)}
+.tabletop:after{content:"";position:absolute;z-index:0;left:-2%;right:-2%;bottom:-26px;height:34px;background:linear-gradient(180deg,#a895a7,#827587);box-shadow:0 16px 25px #30283c55;transform:skewX(-1deg)}
+/* Objects sit on the same receding plane, with visible side faces and rotated paper */
+.calendar{left:112px;top:45px;width:250px;height:270px;transform:perspective(700px) rotateX(5deg) rotateZ(-7deg) skewY(1deg);box-shadow:7px 10px 0 #b3a0b0,12px 15px 0 #99889c,0 24px 28px #40344966}
+.album{left:455px;top:58px;transform:perspective(750px) rotateX(7deg) rotateZ(5deg) skewY(-1deg)}
+.letter{left:900px;top:50px;transform:perspective(700px) rotateX(8deg) rotateZ(7deg);box-shadow:7px 9px 0 #b8a5b4,11px 13px 0 #99889c,0 22px 28px #40344966}
+.portrait{left:770px;top:150px;transform:perspective(700px) rotateX(7deg) rotateZ(-7deg);box-shadow:7px 9px 0 #c2b3c0,11px 13px 0 #99899b,0 23px 28px #40344966}
+.journal{left:85px;top:205px;transform:perspective(700px) rotateX(8deg) rotateZ(4deg);box-shadow:7px 9px 0 #694c62,11px 13px 0 #503d54,0 23px 28px #40344966}
+.vinyl{left:1030px;top:205px;transform:perspective(700px) rotateX(8deg) rotateZ(-4deg)}
+.key{left:940px;top:190px}
+.vase{left:355px;top:8px;transform:translateZ(65px) rotateY(-8deg)}
+.cat{left:10px;top:150px;transform:translateZ(55px) rotateZ(-5deg) rotateY(-8deg)}
+.book-pile{right:120px;top:130px;transform:rotateZ(-4deg) rotateY(-10deg)}
+.snow-globe{right:60px;top:12px;transform:translateZ(55px)}
+.candle{right:20px;top:205px;transform:rotateY(-9deg)}
+.scene-caption{bottom:8px}
+.scene-tip{left:470px;bottom:8px}
+@media(max-width:700px){.room{width:1536px;height:768px;transform:scale(.77);transform-origin:top left}.room-scroll{height:590px}.tabletop{top:385px}}
