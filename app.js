@@ -185,7 +185,7 @@ canvas.addEventListener("pointerup",e=>{
   if(found)openRoom(found.object.userData.room);
 });
 let night=localStorage.getItem("lune-theme")==="night";
-function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x858094:0xf5fbff);hemi.groundColor.set(night?0x342b3b:0x8297a2);sun.color.set(night?0xb7b0d0:0xf1f8ff);sun.intensity=night?1.45:3.05;fill.intensity=night?1.65:1.25;sunDisc.material.color.set(night?0xe3d9f5:0xf4f4e8);scene.fog.color.set(night?0x302831:0xdce8ed);renderer.toneMappingExposure=night ? 0.92 : 1.04;}
+function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x9a8586:0xf8eeee);hemi.groundColor.set(night?0x302526:0x9b8887);sun.color.set(night?0xd6b9b3:0xffeee5);sun.intensity=night?1.25:2.75;fill.color.set(night?0x987b80:0xe5d1cd);fill.intensity=night?1.25:1.05;scene.fog.color.set(night?0x302526:0xe3d9d5);renderer.toneMappingExposure=night?0.9:1.02;}
 document.querySelector("#themeToggle").addEventListener("click",()=>{night=!night;localStorage.setItem("lune-theme",night?"night":"day");setTheme();});setTheme();
 function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);}
 animate();
