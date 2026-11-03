@@ -136,9 +136,9 @@ box(0,5.82,-3.18,8.15,.18,.38,trim);
 box(0,-.02,-3.12,8.15,.22,.42,trim);
 for(const x of [-4.02,4.02]){box(x,2.85,-3.12,.2,5.85,.42,trim);box(x,2.85,-2.88,.08,5.65,.08,brass)}
 box(0,5.65,-2.92,7.95,.12,.12,brass);
-for(let i=0;i<9;i++){
- const x=-3.8+i*.95;
- const fold=line([[x,5.45,-2.42],[x-.12,4.1,-2.42],[x+.1,2.4,-2.42],[x-.08,.55,-2.42]],.045,mat(i%2?"#c7b8c2":"#e9dce0"));
+for(const side of [-1,1])for(let i=0;i<5;i++){
+ const x=side*(3.42+i*.16);
+ line([[x,5.45,-2.42],[x-side*.08,4.1,-2.42],[x+side*.07,2.4,-2.42],[x-side*.05,.55,-2.42]],.045,mat(i%2?"#c7b8c2":"#e9dce0"));
 }
 // Wall picture frames and a narrow floating shelf
 box(-5.05,3.95,-3.1,1.35,1.7,.14,wood);
