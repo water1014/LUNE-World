@@ -16,8 +16,8 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.15;
 
 const camera = new THREE.PerspectiveCamera(39, 1, .1, 100);
-const homePosition = new THREE.Vector3(8.8, 7.8, 11.5);
-const homeTarget = new THREE.Vector3(0, 2.35, -.65);
+const homePosition = new THREE.Vector3(11.2, 8.1, 15.2);
+const homeTarget = new THREE.Vector3(0, 2.45, -.8);
 camera.position.copy(homePosition);
 camera.lookAt(homeTarget);
 
@@ -69,11 +69,13 @@ function rounded(parent,w,h,d,mat,pos,r=.08){
 box(root,15,.22,13,mats.floor,[0,-.12,0]);
 box(root,15,8,.24,mats.wall,[0,3.9,-5.5]);
 box(root,.24,8,13,mats.wallSide,[-7.5,3.9,1]);
+box(root,.24,8,13,mats.wall,[7.5,3.9,1]);
 box(root,15,.16,.18,mats.woodMid,[0,.08,-5.34]);
 box(root,.16,.16,13,mats.woodMid,[-7.34,.08,1]);
+box(root,.16,.16,13,mats.woodMid,[7.34,.08,1]);
 
 // Large arched window with deep reveal, mullions, glass and softly folded curtains.
-const win=new THREE.Group();win.position.set(-2.65,0,-5.28);root.add(win);
+const win=new THREE.Group();win.position.set(-7.28,0,-1.45);win.rotation.y=Math.PI/2;root.add(win);
 box(win,4.15,4.25,.28,mats.wood,[0,4.25,0]);
 box(win,3.84,3.85,.12,mats.glass,[0,4.23,.18]);
 box(win,3.84,.12,.16,mats.ivory,[0,4.15,.29]);
@@ -149,7 +151,7 @@ const bulb=new THREE.PointLight(0xffd9bb,28,5);bulb.position.set(.55,.86,.05);la
 lamp.userData.room="together";clickable.push(lamp);
 
 // Wall shelf, framed pictures and a small cabinet create a readable second depth plane.
-const shelf=new THREE.Group();shelf.position.set(3.8,0,-5.18);root.add(shelf);
+const shelf=new THREE.Group();shelf.position.set(7.28,0,-1.35);shelf.rotation.y=-Math.PI/2;root.add(shelf);
 box(shelf,2.7,.16,.62,mats.woodMid,[0,4.15,0]);
 box(shelf,2.7,.13,.62,mats.woodMid,[0,5.35,0]);
 for(const x of [-1.28,1.28])box(shelf,.13,1.25,.6,mats.wood,[x,4.75,0]);
@@ -157,7 +159,7 @@ for(let i=0;i<5;i++){
   const book=box(shelf,.25,.7+(i%2)*.15,.35,[mats.wine,mats.ivory,mats.rose,mats.woodLight,mats.wood][i],[-.88+i*.34,4.55,0]);
   book.rotation.z=(i%2?-.08:.04);
 }
-const frames=new THREE.Group();frames.position.set(3.75,2.25,-5.05);root.add(frames);
+const frames=new THREE.Group();frames.position.set(7.27,2.25,-3.65);frames.rotation.y=-Math.PI/2;root.add(frames);
 for(let i=0;i<2;i++){
   const f=new THREE.Group();f.position.set(i*.9,0,0);f.rotation.y=-.1;frames.add(f);
   box(f,.78,1.12,.12,mats.brass,[0,0,0]);
@@ -167,7 +169,7 @@ for(let i=0;i<2;i++){
 frames.userData.room="memories";clickable.push(frames);
 
 // Low side cabinet and a tiny keepsake object.
-const cabinet=new THREE.Group();cabinet.position.set(5.25,0,-1.2);root.add(cabinet);
+const cabinet=new THREE.Group();cabinet.position.set(5.05,0,-3.35);cabinet.rotation.y=-.12;root.add(cabinet);
 box(cabinet,1.6,1.65,.95,mats.ivory,[0,.83,0]);
 box(cabinet,1.64,.12,1.0,mats.woodMid,[0,1.68,0]);
 box(cabinet,1.38,.72,.05,mats.woodLight,[0,.85,.5]);
@@ -181,7 +183,7 @@ box(chair,1.35,.16,1.12,mats.ivory,[0,1.19,.02]);
 for(const x of [-.68,.68])for(const z of [-.52,.52])box(chair,.11,1,.11,mats.wood,[x,.5,z]);
 
 // Plant: pot, stems and sculpted leaves as a soft living accent.
-const plant=new THREE.Group();plant.position.set(-5.2,0,-2.2);root.add(plant);
+const plant=new THREE.Group();plant.position.set(-5.15,0,3.15);root.add(plant);
 cyl(plant,.42,.3,.65,mats.rose,[0,.34,0]);
 cyl(plant,.33,.33,.04,mats.wood,[0,.68,0]);
 for(let i=0;i<7;i++){
@@ -233,7 +235,7 @@ dialog.addEventListener("click",e=>{if(e.target===dialog){dialog.close();tweenCa
 let night=localStorage.getItem("lune-theme")==="night";
 function setTheme(){document.body.classList.toggle("night",night);scene.background.set(night?0x292226:0xd8cecc);scene.fog.color.copy(scene.background);hemi.intensity=night?1.25:2.1;keyLight.intensity=night?1.05:3.2;windowLight.intensity=night?.35:1.5;fill.intensity=night?8:24;renderer.toneMappingExposure=night?.92:1.15;}
 document.querySelector("#themeToggle").addEventListener("click",()=>{night=!night;localStorage.setItem("lune-theme",night?"night":"day");setTheme();});setTheme();
-function resize(){const w=screen.clientWidth,h=screen.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=window.matchMedia("(max-width:700px)").matches?43:39;camera.updateProjectionMatrix();}
+function resize(){const w=screen.clientWidth,h=screen.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=window.matchMedia("(max-width:700px)").matches?48:40;camera.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(screen);resize();
 function animate(){requestAnimationFrame(animate);updateTween();renderer.render(scene,camera);}
 animate();
