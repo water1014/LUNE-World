@@ -15,8 +15,8 @@ renderer.toneMappingExposure=1.15;
 const scene3=new THREE.Scene();
 scene3.background=new THREE.Color("#b9c4d0");
 scene3.fog=new THREE.Fog("#b9c4d0",17,32);
-const camera=new THREE.PerspectiveCamera(37,1,.1,80);
-const target=new THREE.Vector3(0,1.15,-.15);
+const camera=new THREE.PerspectiveCamera(41,1,.1,80);
+const target=new THREE.Vector3(0,1.45,-.15);
 let orbit=.12, orbitGoal=.12, cameraPush=0, pushGoal=0;
 const hemi=new THREE.HemisphereLight("#e8edff","#705b5b",2.0);scene3.add(hemi);
 const key=new THREE.DirectionalLight("#fff0dc",3.1);key.position.set(-4,8,5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-9;key.shadow.camera.right=9;key.shadow.camera.top=9;key.shadow.camera.bottom=-9;scene3.add(key);
@@ -204,6 +204,48 @@ box(0,.18,.08,.48,.025,.02,ink,instant);
 for(const x of [-4.8,-2.4,0,2.4,4.8]){line([[x,.47,-2.8],[x+.18,.47,-2.65],[x+.3,.47,-2.5]],.012,brass)}
 for(const x of [-2.4,0,2.4])sphere(x,-.02,3.98,.07,.07,.04,brass);
 
+
+/* Final composition pass: window glazing, layered botanicals and lived-in desk clusters */
+// Window divisions and a deep sill create a readable architectural frame
+for(const x of [-2.02,2.02])box(x,2.78,-2.73,.075,3.42,.22,trim);
+box(0,4.49,-2.73,6.25,.075,.22,trim);
+box(0,1.02,-2.73,6.25,.075,.22,trim);
+box(-3.15,.88,-2.48,.5,.18,.9,woodLight);
+box(3.15,.88,-2.48,.5,.18,.9,woodLight);
+// Distant town lights and tiny stars beyond the glass
+for(let i=0;i<26;i++){const x=-2.9+(i%13)*.48,y=1.35+Math.floor(i/13)*.19;const dot=sphere(x,y,-2.78,.025,.025,.018,mat(i%3?"#f2dfc8":"#dce8f5"));dot.material.emissive=new THREE.Color("#d9e8ff");dot.material.emissiveIntensity=.18}
+for(let i=0;i<18;i++){const x=-2.8+(i*1.13)%5.6,y=3.1+(i%4)*.31;const star=sphere(x,y,-2.77,.018,.018,.012,mat("#fff0d5"));star.material.emissive=new THREE.Color("#fff0d5");star.material.emissiveIntensity=.55}
+// Fine lake reflections as short horizontal strokes
+for(let i=0;i<24;i++){const x=-2.85+(i%8)*.72,y=1.38+Math.floor(i/8)*.12;line([[x,y,-2.76],[x+.22,y+.015,-2.76],[x+.43,y,-2.76]],.009,mat(i%2?"#dce4ed":"#f0dfd5"))}
+// Add broad leaves to the bouquet, each with a central vein
+for(let i=0;i<9;i++){const a=i*2.399,x=Math.cos(a)*(.34+(i%3)*.1),z=Math.sin(a)*(.3+(i%2)*.1),y=1.12+(i%4)*.16;const leaf=sphere(x,y,z,.17,.055,.075,mat(i%2?"#718c7e":"#879b87"),vase);leaf.rotation.z=Math.sin(a)*.8;line([[0,.88,0],[x*.55,y-.05,z*.55],[x,y,z]],.012,mat("#587463"),vase)}
+// Cat details: cheeks, nose, whiskers and folded sleeping paws
+sphere(.72,.37,.385,.055,.035,.025,mat("#bd858b"),cat);
+for(const side of [-1,1])for(let j=0;j<2;j++)line([[.7+side*.06,.34,.37],[.7+side*.34,.32-j*.07,.38]],.009,mat("#b9aaa4"),cat);
+for(let i=0;i<3;i++){const paw=sphere(-.32+i*.34,.16,.4,.2,.105,.19,mat("#f8f3ed"),cat);paw.rotation.z=-.12}
+// Book spines, page edges and bookmark tassels
+for(let i=0;i<3;i++){const x=4.9,y=.48+i*.22;box(x,y+.08,-.7,1.08,.018,.7,mat("#e6d7cc"));line([[4.55,y+.1,-1.05],[5.25,y+.1,-1.05]],.012,brass)}
+line([[4.45,1.1,-.7],[4.35,.8,-.55],[4.32,.57,-.5]],.018,wine);
+// Little drawer fronts under the writing area
+box(-.2,-.19,3.9,5.2,.42,.18,wood);
+for(const x of [-2.15,-.2,1.75]){box(x,-.18,4.01,1.72,.28,.035,woodLight);sphere(x,-.18,4.055,.065,.065,.035,brass)}
+// Desk accessories: ink bottle, paper clips, and a small stack of correspondence
+const inkBottle=new THREE.Group();root.add(inkBottle);inkBottle.position.set(-4.55,.52,2.55);
+cylinder(0,.24,0,.19,.22,.48,mat("#536575",.25),inkBottle);
+cylinder(0,.52,0,.12,.12,.12,brass,inkBottle);
+cylinder(0,.64,0,.075,.075,.14,wine,inkBottle);
+for(let i=0;i<3;i++){const sheet=box(-4.45+i*.08,.55,2.1-i*.07,.78,.035,.58,mat(i%2?"#e9ddd4":"#f4eade"));sheet.rotation.y=-.16+i*.1;sheet.rotation.z=.025*i}
+for(let i=0;i<2;i++){const clip=new THREE.Mesh(new THREE.TorusGeometry(.11,.012,6,24,.0+Math.PI*1.7),brass);clip.position.set(-4.1+i*.18,.59,2.15);clip.rotation.x=Math.PI/2;root.add(clip)}
+// Small jewelry dish and two keepsake rings
+const dish=new THREE.Group();root.add(dish);dish.position.set(4.15,.52,2.7);
+cylinder(0,.035,0,.42,.42,.07,mat("#b8a0a4"),dish);
+const rim=new THREE.Mesh(new THREE.TorusGeometry(.38,.035,8,48),brass);rim.position.y=.08;dish.add(rim);
+for(let i=0;i<2;i++){const ring=new THREE.Mesh(new THREE.TorusGeometry(.12,.018,8,32),brass);ring.position.set(-.1+i*.2,.13,0);ring.rotation.x=Math.PI/2;dish.add(ring)}
+// A small potted trailing plant at the far corner
+const plant=new THREE.Group();root.add(plant);plant.position.set(5.35,.5,-2.45);
+cylinder(0,.24,0,.28,.34,.46,mat("#b58d8b"),plant);
+for(let i=0;i<7;i++){const a=i*2.4;const x=Math.cos(a)*(.25+(i%3)*.08),z=Math.sin(a)*(.25+(i%3)*.08);line([[0,.43,0],[x*.5,.85,z*.5],[x,1.05+(i%2)*.18,z]],.018,mat("#637d6c"),plant);const leaf=sphere(x,1.06+(i%2)*.18,z,.15,.055,.085,mat("#829782"),plant);leaf.rotation.z=Math.cos(a)*.6}
+
 const clickable=[
  [cal,"calendar"],[album,"memories"],[letter,"letters"],[player,"music"],[portrait,"together"],[books,"notes"],[globe,"settings"],[hour,"settings"],[candle,"settings"]
 ];
@@ -211,7 +253,7 @@ const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
 let down=null,dragged=false;
 function resize(){const w=canvas.clientWidth,h=canvas.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix()}
 new ResizeObserver(resize).observe(canvas);resize();
-function setCamera(){const radius=12.8-cameraPush;camera.position.set(Math.sin(orbit)*radius,6.6+cameraPush*.18,Math.cos(orbit)*radius+1.3);camera.lookAt(target)}
+function setCamera(){const radius=11.9-cameraPush;camera.position.set(Math.sin(orbit)*radius,7.25+cameraPush*.18,Math.cos(orbit)*radius+1.3);camera.lookAt(target)}
 setCamera();
 canvas.addEventListener("pointerdown",e=>{down={x:e.clientX,y:e.clientY,orbit};dragged=false;canvas.setPointerCapture(e.pointerId)});
 canvas.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-down.x;if(Math.abs(dx)>5)dragged=true;orbitGoal=THREE.MathUtils.clamp(down.orbit+dx*.003,-.48,.48)});
