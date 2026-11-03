@@ -3,24 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#e3d9d5">
-<meta name="description" content="LUNE，一个沉浸式的 2.5D 私人书桌空间。">
-<title>LUNE · A quiet place</title>
+<meta name="theme-color" content="#d8cecc">
+<meta name="description" content="LUNE，一个可以看见、走近并触碰的立体小书房。">
+<title>LUNE · A little world</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./styles.css?v=3.3.0">
+<link rel="stylesheet" href="./styles.css?v=4.0.0">
 </head>
 <body>
 <main class="world-screen">
-  <canvas id="worldCanvas" aria-label="LUNE 书桌空间，点击桌面物件进入功能"></canvas>
+  <canvas id="worldCanvas" aria-label="LUNE 立体书房，可以拖动视角并点击物件"></canvas>
   <div class="scene-wash"></div>
   <header class="topbar">
     <a class="brand" href="./" aria-label="LUNE 首页"><span class="brand-mark">L</span><span class="brand-word">LUNE<small>OUR LITTLE WORLD</small></span></a>
     <div class="top-right"><span class="live-label"><i></i> A QUIET PLACE</span><button id="themeToggle" class="theme-toggle" aria-label="切换昼夜"><span class="sun">☼</span><span class="moon">☾</span></button></div>
   </header>
-  <div class="edge-hint right-hint" aria-hidden="true">›</div>
-  <div id="loading" class="loading"><span class="loader"></span><span>正在点亮这个小世界…</span></div>
+  <div class="scene-caption"><span>THE LITTLE STUDY</span><b>一隅书房</b><small>轻轻拖动，看看这里</small></div>
+  <div id="loading" class="loading"><span class="loader"></span><span>正在布置这个小世界…</span></div>
   <div id="loadError" class="load-error">小世界暂时没有加载成功。请检查网络后重新打开。</div>
   <dialog id="roomDialog">
     <div class="dialog-top"><span>LUNE / PRIVATE SPACE</span><button id="closeDialog" aria-label="关闭">×</button></div>
@@ -29,25 +29,13 @@
 </main>
 <script>
 (function(){
-  var loading=document.getElementById("loading");
-  var error=document.getElementById("loadError");
-  function show(message){
-    if(loading) loading.classList.add("hidden");
-    if(error){error.classList.add("visible");error.textContent=message+"  可检查网络后点击这里重新加载。";error.style.cursor="pointer";error.onclick=function(){location.reload()};}
-  }
-  window.luneShowError=show;
-  window.addEventListener("error",function(event){
-    if(event.target&&event.target.tagName==="SCRIPT") show("小世界的场景模块没有加载成功，可能是资源网络连接失败。");
-    else if(event.message) show("场景运行遇到问题："+event.message);
-  },true);
-  window.addEventListener("unhandledrejection",function(event){
-    show("场景初始化失败："+String(event.reason||"未知错误"));
-  });
-  window.setTimeout(function(){
-    if(loading&&!loading.classList.contains("hidden")) show("场景启动超时，可能是手机浏览器暂时无法完成渲染。");
-  },12000);
+  var loading=document.getElementById("loading"),error=document.getElementById("loadError");
+  function show(message){if(loading)loading.classList.add("hidden");if(error){error.classList.add("visible");error.textContent=message+" 点击这里重新加载。";error.style.cursor="pointer";error.onclick=function(){location.reload()};}}
+  window.addEventListener("error",function(e){if(e.message)show("场景运行遇到问题："+e.message);},true);
+  window.addEventListener("unhandledrejection",function(e){show("场景初始化失败："+String(e.reason||"未知错误"));});
+  setTimeout(function(){if(loading&&!loading.classList.contains("hidden"))show("场景启动超时，可能是手机浏览器暂时无法完成渲染。");},15000);
 })();
 </script>
-<script type="module" src="./app.js?v=3.3.0"></script>
+<script type="module" src="./app.js?v=4.0.0"></script>
 </body>
 </html>
