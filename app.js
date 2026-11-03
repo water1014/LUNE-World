@@ -33,8 +33,8 @@ const mat={
  leaf:new THREE.MeshStandardMaterial({color:0x829b8e,roughness:.88}),
  leaf2:new THREE.MeshStandardMaterial({color:0xa7b9a2,roughness:.9}),
  gold:new THREE.MeshStandardMaterial({color:0xaab8b6,metalness:.18,roughness:.48}),
- glass:new THREE.MeshPhysicalMaterial({color:0xc8e1e8,roughness:.18,metalness:.025,transparent:true,opacity:.54}),
- dark:new THREE.MeshStandardMaterial({color:0x617780,roughness:.72}),
+ glass:new THREE.MeshPhysicalMaterial({color:0xd9c8c9,roughness:.2,metalness:.018,transparent:true,opacity:.48}),
+ dark:new THREE.MeshStandardMaterial({color:0x4e393e,roughness:.76}),
  paper:new THREE.MeshStandardMaterial({color:0xf1f5f3,roughness:.94})
 };
 const clickables=[];
@@ -53,9 +53,9 @@ mat.wine.color.set(0x70434b);mat.gold.color.set(0xb49a82);mat.paper.color.set(0x
 // Procedural material pass inspired by the reference project: fine wood grain and handmade paper, generated locally without external image assets.
 function makeGrainTexture(base,dark,light,seed){const canvas=document.createElement("canvas");canvas.width=1024;canvas.height=384;const x=canvas.getContext("2d");x.fillStyle=base;x.fillRect(0,0,1024,384);let n=seed;const rand=()=>{n=(n*1664525+1013904223)>>>0;return n/4294967296;};for(let i=0;i<18;i++){const y=rand()*384,h=8+rand()*34;x.fillStyle=rand()<.5?dark:light;x.globalAlpha=.08+rand()*.09;x.fillRect(0,y,1024,h);}x.globalAlpha=1;for(let i=0;i<620;i++){const y=rand()*384,x0=rand()*1024,len=180+rand()*900,amp=.8+rand()*3.8,phase=rand()*6.28;x.strokeStyle=rand()<.68?dark:light;x.globalAlpha=.06+rand()*.13;x.lineWidth=.5+rand()*1.3;x.beginPath();for(let k=0;k<=16;k++){const px=x0+len*k/16,py=y+Math.sin(k*.48+phase)*amp+Math.sin(k*.13+phase)*amp*.35;k?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();}x.globalAlpha=1;for(let i=0;i<2600;i++){x.fillStyle=rand()<.55?dark:light;x.globalAlpha=.035+rand()*.07;x.fillRect(rand()*1024,rand()*384,1+rand()*2,.7+rand()*1.3);}x.globalAlpha=1;const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;}
 function makePaperTexture(){const canvas=document.createElement("canvas");canvas.width=512;canvas.height=512;const x=canvas.getContext("2d");x.fillStyle="#eee6df";x.fillRect(0,0,512,512);let n=914;for(let i=0;i<7000;i++){n=(n*1664525+1013904223)>>>0;const px=(n>>>8)%512;n=(n*1664525+1013904223)>>>0;const py=(n>>>8)%512;x.fillStyle=(n&1)?"rgba(105,70,68,.045)":"rgba(255,255,255,.18)";x.fillRect(px,py,1+(n%2),1);}const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;return t;}
-mat.wood.map=makeGrainTexture("#715b56","rgba(38,25,24,.8)","rgba(218,177,158,.8)",712);mat.wood.color.set(0xffffff);mat.wood.roughness=.72;mat.wood.needsUpdate=true;
-mat.woodLight.map=makeGrainTexture("#a48b80","rgba(75,49,46,.65)","rgba(238,211,193,.75)",318);mat.woodLight.color.set(0xffffff);mat.woodLight.roughness=.76;mat.woodLight.needsUpdate=true;
-mat.paper.map=makePaperTexture();mat.paper.color.set(0xffffff);mat.paper.roughness=.96;mat.paper.needsUpdate=true;
+mat.wood.map=makeGrainTexture("#715b56","rgba(38,25,24,.8)","rgba(218,177,158,.8)",712);mat.wood.bumpMap=mat.wood.map;mat.wood.bumpScale=.026;mat.wood.color.set(0xffffff);mat.wood.roughness=.78;mat.wood.needsUpdate=true;
+mat.woodLight.map=makeGrainTexture("#a48b80","rgba(75,49,46,.65)","rgba(238,211,193,.75)",318);mat.woodLight.bumpMap=mat.woodLight.map;mat.woodLight.bumpScale=.018;mat.woodLight.color.set(0xffffff);mat.woodLight.roughness=.8;mat.woodLight.needsUpdate=true;
+mat.paper.map=makePaperTexture();mat.paper.bumpMap=mat.paper.map;mat.paper.bumpScale=.012;mat.paper.color.set(0xffffff);mat.paper.roughness=.98;mat.paper.needsUpdate=true;
 const room=new THREE.Group();scene.add(room);
 box(room,15,.22,10,mat.floor,[0,-.18,0]);
 box(room,15,10,.22,mat.wall,[0,4.75,-4.15]);
