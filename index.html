@@ -3,36 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#dce8ed">
+<meta name="theme-color" content="#e3d9d5">
 <meta name="description" content="LUNE，一个沉浸式的 2.5D 私人书桌空间。">
-<title>LUNE · Our little world</title>
+<title>LUNE · A quiet place</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./styles.css?v=3.1.0">
+<link rel="stylesheet" href="./styles.css?v=3.2.0">
 </head>
 <body>
 <main class="world-screen">
-  <canvas id="worldCanvas" aria-label="LUNE 全屏 2.5D 书桌空间，点击桌面物件进入功能"></canvas>
+  <canvas id="worldCanvas" aria-label="LUNE 书桌空间，点击桌面物件进入功能"></canvas>
   <div class="scene-wash"></div>
   <header class="topbar">
     <a class="brand" href="./" aria-label="LUNE 首页"><span class="brand-mark">L</span><span class="brand-word">LUNE<small>OUR LITTLE WORLD</small></span></a>
-    <div class="top-right"><span class="live-label"><i></i> A WORLD FOR TWO</span><button id="themeToggle" class="theme-toggle" aria-label="切换昼夜"><span class="sun">☼</span><span class="moon">☾</span></button></div>
+    <div class="top-right"><span class="live-label"><i></i> A QUIET PLACE</span><button id="themeToggle" class="theme-toggle" aria-label="切换昼夜"><span class="sun">☼</span><span class="moon">☾</span></button></div>
   </header>
-  <section class="scene-title">
-    <span class="kicker" id="zoneKicker">01 / THE GARDEN</span>
-    <h1 id="zoneTitle">花园</h1>
-    <p id="zoneSubtitle">把日子种成喜欢的样子</p>
-  </section>
-  <div class="edge-hint left-hint" aria-hidden="true">‹</div>
   <div class="edge-hint right-hint" aria-hidden="true">›</div>
-  <div class="drag-hint"><span>↔</span> 左右滑动，去别的角落看看</div>
-  <nav class="zone-nav" aria-label="空间导航">
-    <button data-zone="0"><i></i><span>花园</span></button>
-    <button data-zone="1" class="active"><i></i><span>客厅</span></button>
-    <button data-zone="2"><i></i><span>书房</span></button>
-  </nav>
-  <div class="bottom-note"><span>MADE OF LITTLE MOMENTS</span><span id="zoneCounter">02 — 03</span></div>
   <div id="loading" class="loading"><span class="loader"></span><span>正在点亮这个小世界…</span></div>
   <div id="loadError" class="load-error">小世界暂时没有加载成功。请检查网络后重新打开。</div>
   <dialog id="roomDialog">
@@ -61,6 +48,6 @@
   },12000);
 })();
 </script>
-<script type="module" src="./app.js?v=3.1.0"></script>
+<script type="module" src="./app.js?v=3.2.0"></script>
 </body>
 </html>
