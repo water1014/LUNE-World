@@ -5,11 +5,13 @@ const screen=document.querySelector(".world-screen");
 const loading=document.querySelector("#loading");
 const scene=new THREE.Scene();
 scene.fog=new THREE.Fog(0xdce8ed,24,48);
-const camera=new THREE.OrthographicCamera(-7,7,4.5,-4.5,.1,100);
-const target=new THREE.Vector3(0,2.25,0);
-// Front-facing orthographic camera: straight-on view, with depth kept in the geometry and lighting.
-const elevation=0,azimuth=0,radius=17;
-function placeCamera(){camera.position.set(target.x+Math.sin(azimuth)*Math.cos(elevation)*radius,target.y+Math.sin(elevation)*radius,Math.cos(azimuth)*Math.cos(elevation)*radius);camera.lookAt(target);camera.updateProjectionMatrix();}
+// Perspective 3/4 view, looking down into the desk instead of facing the wall.
+const camera=new THREE.PerspectiveCamera(48,1,.1,100);
+const target=new THREE.Vector3(0,2.7,0);
+let elevation=.43,azimuth=.34,radius=12.4;
+let cameraTween=null,returnPose=null;
+function syncOrbitFromPose(){const d=camera.position.clone().sub(target);radius=d.length();elevation=Math.asin(THREE.MathUtils.clamp(d.y/radius,-.95,.95));azimuth=Math.atan2(d.x,d.z);}
+function placeCamera(){camera.position.set(target.x+Math.sin(azimuth)*Math.cos(elevation)*radius,target.y+Math.sin(elevation)*radius, target.z+Math.cos(azimuth)*Math.cos(elevation)*radius);camera.lookAt(target);camera.updateProjectionMatrix();}
 placeCamera();
 const renderer=new THREE.WebGLRenderer({canvas,alpha:true,antialias:true,powerPreference:"high-performance"});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.7));
@@ -157,7 +159,7 @@ const rugNew=new THREE.Mesh(new THREE.CylinderGeometry(3.35,3.5,.055,64),new THR
 rugNew.position.set(0,.015,1.62);rugNew.scale.set(1,.18,.54);room.add(rugNew);
 hemi.intensity=2;sun.position.set(-5,11,8);sun.intensity=2.8;fill.position.set(7,7,-7);fill.intensity=1.1;
 const deskGlow=new THREE.PointLight(0xf2cdb8,2.8,5);deskGlow.position.set(-1.05,3.1,.2);room.add(deskGlow);
-target.set(0,4.05,0);placeCamera();
+target.set(0,2.7,0);placeCamera();
 
 
 const roomData={
@@ -168,23 +170,67 @@ const roomData={
 };
 const dialog=document.querySelector("#roomDialog");
 function openRoom(key){const d=roomData[key];if(!d)return;document.querySelector("#dialogIndex").textContent=d.index;document.querySelector("#dialogTitle").textContent=d.title;document.querySelector("#dialogDescription").textContent=d.description;document.querySelector("#dialogSymbol").textContent=d.symbol;if(!dialog.open)dialog.showModal();}
-document.querySelector("#closeDialog").addEventListener("click",()=>dialog.close());dialog.addEventListener("click",e=>{if(e.target===dialog)dialog.close();});
+
 
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
-function resize(){const w=screen.clientWidth,h=screen.clientHeight;renderer.setSize(w,h,false);const aspect=w/h;const v=window.matchMedia("(max-width:700px)").matches?8.8:9.2;camera.left=-v*aspect/2;camera.right=v*aspect/2;camera.top=v/2;camera.bottom=-v/2;camera.updateProjectionMatrix();}
+function resize(){const w=screen.clientWidth,h=screen.clientHeight;renderer.setSize(w,h,false);camera.aspect=w/h;camera.fov=window.matchMedia("(max-width:700px)").matches?49:43;camera.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(screen);resize();
+function easeCamera(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+function tweenCamera(nextPos,nextTarget,duration=760){
+  cameraTween={fromPos:camera.position.clone(),toPos:nextPos.clone(),fromTarget:target.clone(),toTarget:nextTarget.clone(),start:performance.now(),duration};
+}
+function focusCamera(object){
+  const p=new THREE.Vector3();object.getWorldPosition(p);
+  returnPose={pos:camera.position.clone(),target:target.clone()};
+  const direction=camera.position.clone().sub(target).normalize();
+  const nextPos=p.clone().add(direction.multiplyScalar(5.9));nextPos.y+=.65;
+  const nextTarget=p.clone();nextTarget.y+=.12;
+  tweenCamera(nextPos,nextTarget,820);
+}
+function restoreCamera(){
+  if(!returnPose)return;
+  tweenCamera(returnPose.pos,returnPose.target,700);
+  returnPose=null;
+}
+function updateCameraTween(){
+  if(!cameraTween)return;
+  const t=Math.min(1,(performance.now()-cameraTween.start)/cameraTween.duration),e=easeCamera(t);
+  camera.position.lerpVectors(cameraTween.fromPos,cameraTween.toPos,e);
+  const look=cameraTween.fromTarget.clone().lerp(cameraTween.toTarget,e);
+  camera.lookAt(look);
+  if(t>=1){target.copy(cameraTween.toTarget);cameraTween=null;syncOrbitFromPose();}
+}
+let gesture=null;
+canvas.addEventListener("pointerdown",e=>{gesture={x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,moved:false};canvas.setPointerCapture(e.pointerId);});
+canvas.addEventListener("pointermove",e=>{
+  if(!gesture||cameraTween||returnPose)return;
+  const dx=e.clientX-gesture.lastX,dy=e.clientY-gesture.lastY;
+  if(Math.hypot(e.clientX-gesture.x,e.clientY-gesture.y)>7)gesture.moved=true;
+  if(gesture.moved){
+    azimuth-=dx*.0042;
+    elevation=THREE.MathUtils.clamp(elevation+dy*.0027,.18,.92);
+    placeCamera();
+  }
+  gesture.lastX=e.clientX;gesture.lastY=e.clientY;
+});
 canvas.addEventListener("pointerup",e=>{
+  if(!gesture)return;
+  const moved=gesture.moved;gesture=null;
+  if(moved)return;
   const r=canvas.getBoundingClientRect();
   pointer.x=(e.clientX-r.left)/r.width*2-1;
   pointer.y=-((e.clientY-r.top)/r.height*2-1);
   raycaster.setFromCamera(pointer,camera);
   const found=raycaster.intersectObjects(clickables,true).find(h=>h.object.userData.room);
-  if(found)openRoom(found.object.userData.room);
+  if(found){focusCamera(found.object);openRoom(found.object.userData.room);}
 });
+canvas.addEventListener("pointercancel",()=>{gesture=null;});
+document.querySelector("#closeDialog").addEventListener("click",()=>{dialog.close();restoreCamera();});
+dialog.addEventListener("click",e=>{if(e.target===dialog){dialog.close();restoreCamera();}});
 let night=localStorage.getItem("lune-theme")==="night";
 function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x9a8586:0xf8eeee);hemi.groundColor.set(night?0x302526:0x9b8887);sun.color.set(night?0xd6b9b3:0xffeee5);sun.intensity=night?1.25:2.75;fill.color.set(night?0x987b80:0xe5d1cd);fill.intensity=night?1.25:1.05;scene.fog.color.set(night?0x302526:0xe3d9d5);renderer.toneMappingExposure=night?0.9:1.02;}
 document.querySelector("#themeToggle").addEventListener("click",()=>{night=!night;localStorage.setItem("lune-theme",night?"night":"day");setTheme();});setTheme();
-function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);}
+function animate(){requestAnimationFrame(animate);updateCameraTween();if(!cameraTween&&!returnPose)placeCamera();renderer.render(scene,camera);}
 animate();
 canvas.dataset.ready="true";loading.classList.add("hidden");document.querySelector("#loadError").classList.remove("visible");
 
