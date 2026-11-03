@@ -22,6 +22,7 @@ const hemi=new THREE.HemisphereLight("#e8edff","#705b5b",2.0);scene3.add(hemi);
 const key=new THREE.DirectionalLight("#fff0dc",3.1);key.position.set(-4,8,5);key.castShadow=true;key.shadow.mapSize.set(2048,2048);key.shadow.camera.left=-9;key.shadow.camera.right=9;key.shadow.camera.top=9;key.shadow.camera.bottom=-9;scene3.add(key);
 const fill=new THREE.PointLight("#a9c8ee",65,18);fill.position.set(1,4,-2);scene3.add(fill);
 const glow=new THREE.PointLight("#dca8a4",22,9);glow.position.set(-4,2,1);scene3.add(glow);
+let nightMode=false;window.addEventListener("lune-theme",e=>{nightMode=!!e.detail?.night;scene3.background=new THREE.Color(nightMode?"#252b40":"#b9c4d0");scene3.fog.color.set(nightMode?"#252b40":"#b9c4d0");hemi.intensity=nightMode?0.75:2.0;key.intensity=nightMode?1.05:3.1;fill.intensity=nightMode?95:65;glow.intensity=nightMode?36:22;renderer.toneMappingExposure=nightMode?0.9:1.15;});
 
 const mat=(color,roughness=.72,metalness=0)=>new THREE.MeshStandardMaterial({color,roughness,metalness});
 const wood=mat("#a9867e"), woodLight=mat("#d3b7a9"), ivory=mat("#f0e8df"), wine=mat("#714752"), rose=mat("#b98c91"), brass=mat("#b49a76",.32,.68), glass=new THREE.MeshPhysicalMaterial({color:"#c5d8e7",roughness:.12,metalness:.08,transmission:.22,transparent:true,opacity:.65});
@@ -137,7 +138,7 @@ function setCamera(){const radius=12.8-cameraPush;camera.position.set(Math.sin(o
 setCamera();
 canvas.addEventListener("pointerdown",e=>{down={x:e.clientX,y:e.clientY,orbit};dragged=false;canvas.setPointerCapture(e.pointerId)});
 canvas.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-down.x;if(Math.abs(dx)>5)dragged=true;orbitGoal=THREE.MathUtils.clamp(down.orbit+dx*.003,-.48,.48)});
-canvas.addEventListener("pointerup",e=>{if(!down)return;if(!dragged){const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(clickable.flatMap(([g])=>g.children),true);if(hits.length){let obj=hits[0].object;let chosen=clickable.find(([g])=>{let p=obj;while(p&&p!==g)p=p.parent;return p===g});if(chosen){pushGoal=.8;setTimeout(()=>{pushGoal=0;window.openRoom?.(chosen[1]);},220)}}}down=null});
+canvas.addEventListener("pointerup",e=>{if(!down)return;if(!dragged){const r=canvas.getBoundingClientRect();pointer.x=((e.clientX-r.left)/r.width)*2-1;pointer.y=-((e.clientY-r.top)/r.height)*2+1;raycaster.setFromCamera(pointer,camera);const hits=raycaster.intersectObjects(clickable.map(([g])=>g),true);if(hits.length){let obj=hits[0].object;let chosen=clickable.find(([g])=>{let p=obj;while(p&&p!==g)p=p.parent;return p===g});if(chosen){pushGoal=.8;setTimeout(()=>{pushGoal=0;window.openRoom?.(chosen[1]);},220)}}}down=null});
 canvas.addEventListener("pointercancel",()=>down=null);
 let t=0;
 function animate(){requestAnimationFrame(animate);t+=.012;orbit=THREE.MathUtils.lerp(orbit,orbitGoal,.06);cameraPush=THREE.MathUtils.lerp(cameraPush,pushGoal,.08);setCamera();disc.rotation.y+=.012;flame.scale.y=1+Math.sin(t*3)*.08;renderer.render(scene3,camera)}
