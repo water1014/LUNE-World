@@ -100,3 +100,89 @@ body.night{--ink:#e5d9d5;--muted:#b3a0a2;--bg:#292a33;background:#292a33}.night 
 .night .paper-base{background:linear-gradient(145deg,#d3c6c1,#c5b6b3 72%,#b7a6a5)}
 .night .window-light{opacity:.12}
 .night .linen-fold{background:linear-gradient(145deg,#b6a5a0,#97858a 58%,#81767d)}
+
+
+/* SCENE V2: remove the isolated board; build one continuous room + tabletop */
+.viewport{
+  height:660px!important;
+  padding:0!important;
+  overflow-x:auto;
+  overflow-y:hidden;
+  position:relative;
+  background:
+    linear-gradient(180deg,transparent 0 49%,rgba(91,65,57,.10) 49.2%,transparent 50%),
+    linear-gradient(180deg,#c8b8b1 0%,#d8c9c0 44%,#ad9285 44.2%,#9c7f72 100%)!important;
+  box-shadow:inset 0 22px 35px rgba(69,48,51,.08),inset 0 -20px 30px rgba(50,31,27,.18);
+}
+.viewport:before{
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:1;mix-blend-mode:normal;
+  background:
+    linear-gradient(90deg,transparent 0 7%,rgba(255,255,255,.18) 7.1% 7.3%,transparent 7.4% 100%),
+    radial-gradient(ellipse at 25% 20%,rgba(255,245,224,.38),transparent 38%),
+    repeating-linear-gradient(0deg,transparent 0 4px,rgba(85,59,52,.035) 5px,transparent 6px 12px);
+}
+.viewport:after{
+  content:"";position:absolute;left:0;right:0;top:44%;height:18px;pointer-events:none;
+  background:linear-gradient(180deg,#e4d5c9 0%,#b99f92 28%,#8d7065 100%);
+  box-shadow:0 9px 18px rgba(54,35,30,.22),inset 0 1px #fff8;
+}
+.desk-scene{
+  width:1040px;height:590px;margin:38px auto 0;
+  background:transparent!important;border-radius:0!important;
+  box-shadow:none!important;isolation:isolate;
+}
+.desk-scene:before,.desk-scene:after{content:none!important;display:none!important}
+.paper-base{display:none!important}
+.scene-shadow{inset:240px 20px 8px;background:rgba(48,29,25,.27);filter:blur(34px);transform:translateY(26px);border-radius:48%}
+.scene-environment{inset:0;z-index:0}
+.window-light{
+  position:absolute;right:110px;top:-25px;width:280px;height:275px;
+  opacity:.95;clip-path:none;filter:none;
+  background:
+   linear-gradient(90deg,transparent 48%,#f0e2d5 48.5% 51%,transparent 51.5%),
+   linear-gradient(0deg,transparent 48%,#f0e2d5 48.5% 51%,transparent 51.5%),
+   linear-gradient(135deg,#f7e9d8,#d8c6bb);
+  border:12px solid #e6d8ce;
+  box-shadow:0 8px 20px #5d443b30,inset 0 0 0 2px #fff8;
+  transform:perspective(600px) rotateY(-4deg);
+}
+.window-light:before{
+ content:"";position:absolute;inset:-12px;box-shadow:inset 0 0 0 2px #b79e92;
+}
+.window-light:after{
+ content:"";position:absolute;left:-45px;top:100%;width:430px;height:210px;
+ background:linear-gradient(155deg,rgba(255,241,210,.38),transparent 70%);
+ clip-path:polygon(0 0,100% 0,78% 100%,12% 100%);
+}
+.linen-fold{
+ left:-20px;bottom:-12px;width:420px;height:180px;z-index:1;
+ opacity:.88;clip-path:polygon(0 5%,100% 0,86% 100%,0 100%);
+ filter:drop-shadow(0 -5px 9px #563d3528);
+}
+.tea-cup{z-index:4}
+.flower-sprig{left:505px;top:4px;z-index:1}
+.object{z-index:3}
+.calendar{left:75px;top:90px}
+.photo-stack{left:360px;top:88px}
+.letter{left:720px;top:78px}
+.music{left:730px;top:320px}
+.polaroid{left:390px;top:365px}
+.notebook{left:95px;top:445px}
+.key-object{left:620px;top:410px}
+.scene-stamp,.scene-hint{z-index:5}
+@media(max-width:700px){
+ .viewport{height:590px!important;padding:0!important;scroll-snap-type:x proximity}
+ .desk-scene{width:900px;height:540px;margin:24px 0 0 0;transform:scale(.88);transform-origin:left top}
+ .viewport:after{top:44%}
+ .window-light{right:90px;width:250px;height:230px}
+ .tea-cup{right:48px;bottom:48px}
+}
+.night .viewport{
+ background:
+ linear-gradient(180deg,transparent 0 49%,rgba(0,0,0,.16) 49.2%,transparent 50%),
+ linear-gradient(180deg,#59515b 0%,#62565c 44%,#5b4748 44.2%,#47393d 100%)!important;
+}
+.night .viewport:after{background:linear-gradient(180deg,#897477,#57474b 35%,#332e37)}
+.night .window-light{background:linear-gradient(135deg,#77717d,#5e5a68);border-color:#8e8286;box-shadow:0 8px 20px #08080e55,inset 0 0 0 2px #c2b4aa55}
+.night .window-light:before{box-shadow:inset 0 0 0 2px #b6a1a0}
+.night .linen-fold{background:linear-gradient(145deg,#b6a5a0,#97858a 58%,#81767d)}
