@@ -43,153 +43,7 @@ function box(parent,w,h,d,material,pos){const m=new THREE.Mesh(new THREE.BoxGeom
 function cyl(parent,rt,rb,h,material,pos,segments=24){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,segments),material);m.position.set(...pos);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
 function sphere(parent,r,material,pos,scale=[1,1,1]){const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,16),material);m.position.set(...pos);m.scale.set(...scale);m.castShadow=true;parent.add(m);return m;}
 function hit(parent,w,h,d,pos,room){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),new THREE.MeshBasicMaterial({visible:false}));m.position.set(...pos);m.userData.room=room;parent.add(m);clickables.push(m);return m;}
-function makePlant(x,z,scale=1){const g=new THREE.Group();g.position.set(x,0,z);g.scale.setScalar(scale);scene.add(g);cyl(g,.28,.21,.4,mat.cream,[0,.2,0]);cyl(g,.29,.29,.06,mat.gold,[0,.42,0]);cyl(g,.025,.035,.9,mat.leaf,[0,.83,0],10);for(let i=0;i<7;i++){const a=i*Math.PI*2/7;const l=sphere(g,.17, i%2?mat.leaf:mat.leaf2,[Math.cos(a)*.28,.9+(i%3)*.12,Math.sin(a)*.28],[.7,2.1,.55]);l.rotation.z=-Math.cos(a)*.5;l.rotation.x=Math.sin(a)*.4;}return g;}
-function makeZoneMarker(x,label){const g=new THREE.Group();g.position.set(x,0,-3.05);scene.add(g);box(g,1.35,.05,.05,mat.gold,[0,2.45,0]);const p=box(g,.018,.55,.018,mat.gold,[-.66,2.18,0]);p.castShadow=false;}
-
-// A continuous architectural shell: three connected spaces, not three cards.
-box(scene,27,.22,8,mat.floor,[0,-.12,0]);
-box(scene,27,5.35,.2,mat.wall,[0,2.67,-4]);
-box(scene,.2,5.35,8,mat.side,[-13.5,2.67,0]);
-box(scene,.2,5.35,8,mat.side,[13.5,2.67,0]);
-box(scene,27,.16,.13,mat.trim,[0,.08,-3.88]);
-for(let x=-12.8;x<=12.81;x+=.72)box(scene,.012,.008,7.8,mat.floor2,[x,.002,0]);
-for(let x=-8.8;x<=8.81;x+=8.8){box(scene,.12,5.2,.16,mat.trim,[x,2.6,-3.88]);box(scene,.12,5.2,.16,mat.trim,[x,2.6,3.88]);}
-for(let x=-12.5;x<=12.51;x+=1.8)box(scene,.025,4.55,.035,mat.trim,[x,2.55,-3.86]);
-
-// Garden zone on the left.
-const gardenRug=cyl(scene,2.25,2.25,.045,new THREE.MeshStandardMaterial({color:0xc4d4d5,roughness:1}),[-9,.02,.35],48);gardenRug.scale.set(1,.22,1);
-makePlant(-11.7,-1.1,1.45);makePlant(-7.1,-1.1,1.18);makePlant(-11.2,2.1,.9);
-const tree=new THREE.Group();tree.position.set(-9.4,0,-1.65);scene.add(tree);
-cyl(tree,.15,.2,2.25,mat.wood,[0,1.1,0],16);
-sphere(tree,.95,mat.leaf,[-.25,2.25,0],[1.05,1.1,.8]);sphere(tree,.78,mat.leaf2,[.45,2.55,-.12],[1,.95,.82]);sphere(tree,.72,mat.leaf,[-.75,2.72,-.1],[.95,.9,.75]);
-const gardenBench=new THREE.Group();gardenBench.position.set(-9.1,0,1.75);scene.add(gardenBench);
-round(gardenBench,2,.16,.55,mat.wood,[0,.72,0],.06);for(const x of [-.78,.78]){box(gardenBench,.12,.7,.48,mat.wood,[x,.36,0]);}round(gardenBench,2,.72,.13,mat.wood,[0,1.12,-.22],.05);
-const gardenArch=new THREE.Group();gardenArch.position.set(-12.1,0,-2.9);scene.add(gardenArch);
-round(gardenArch,.14,2.8,.16,mat.gold,[-.9,1.4,0],.05);round(gardenArch,.14,2.8,.16,mat.gold,[.9,1.4,0],.05);round(gardenArch,1.9,.14,.16,mat.gold,[0,2.78,0],.05);
-for(let i=0;i<5;i++){const f=sphere(gardenArch,.13,mat.leaf2,[-.72+i*.35,2.55,0],[.8,1.5,.7]);f.rotation.z=-.35+i*.15;}
-hit(gardenBench,2.4,1.6,1.1,[0,.85,0],"together");
-
-// Living room in the middle.
-const windowG=new THREE.Group();windowG.position.set(-1.95,0,-3.78);scene.add(windowG);
-box(windowG,2.65,2.55,.16,mat.trim,[0,3.05,0]);box(windowG,2.38,2.28,.06,mat.glass,[0,3.05,.09]);
-box(windowG,.07,2.25,.08,mat.cream,[0,3.05,.14]);box(windowG,2.35,.07,.08,mat.cream,[0,3.05,.14]);box(windowG,2.8,.16,.34,mat.wood,[0,1.77,.12]);
-const sunDisc=sphere(windowG,.22,new THREE.MeshBasicMaterial({color:0xf4f4e8}),[-.58,3.65,.16]);
-const rug=cyl(scene,2.3,2.3,.05,mat.cream,[.1,.02,.5],56);rug.scale.set(1,.22,1);
-const sofa=new THREE.Group();sofa.position.set(0,0,-.1);scene.add(sofa);
-round(sofa,3.1,.55,1.1,mat.sofa,[0,.65,0],.18);round(sofa,3.1,1.12,.34,mat.sofa,[0,1.2,-.47],.17);
-round(sofa,.42,.85,1.08,mat.sofa,[-1.34,.92,-.02],.15);round(sofa,.42,.85,1.08,mat.sofa,[1.34,.92,-.02],.15);
-round(sofa,1.35,.2,.8,mat.blush,[-.72,1.01,.12],.12);round(sofa,1.35,.2,.8,mat.blush,[.72,1.01,.12],.12);
-round(sofa,.7,.65,.2,mat.cream,[-.82,1.38,-.28],.12).rotation.z=-.12;round(sofa,.7,.65,.2,mat.wine,[.76,1.38,-.28],.12).rotation.z=.12;
-for(const x of [-1.15,1.15])for(const z of [-.42,.38])cyl(sofa,.055,.07,.42,mat.wood,[x,.24,z],12);
-hit(sofa,3.4,1.8,1.4,[0,1.05,0],"together");
-const table=new THREE.Group();table.position.set(.1,0,1.65);scene.add(table);
-const tableTop=cyl(table,.92,.92,.14,mat.wood,[0,.72,0],48);tableTop.scale.z=.72;
-for(const [x,z] of [[-.55,-.38],[.55,-.38],[-.55,.38],[.55,.38]])cyl(table,.045,.06,.68,mat.gold,[x,.36,z],12);
-round(table,.44,.08,.32,mat.wine,[-.2,.84,-.08],.02).rotation.y=-.15;
-cyl(table,.12,.14,.18,mat.cream,[.38,.91,.12],24);cyl(table,.085,.085,.008,mat.dark,[.38,1.005,.12],24);
-const sideboard=new THREE.Group();sideboard.position.set(-3.1,0,-2.3);scene.add(sideboard);
-round(sideboard,1.35,.72,.55,mat.wood,[0,.48,0],.07);round(sideboard,1.42,.12,.6,mat.cream,[0,.9,0],.04);
-for(const x of [-.5,.5])cyl(sideboard,.035,.04,.4,mat.gold,[x,.2,0],12);
-const photo=new THREE.Group();photo.position.set(-.15,1.04,-.1);sideboard.add(photo);
-round(photo,.56,.72,.09,mat.gold,[0,.35,0],.025);round(photo,.45,.6,.035,mat.wine,[0,.35,.06],.01);sphere(photo,.13,mat.cream,[0,.37,.09],[1,.8,.3]);
-hit(photo,.8,1.1,.3,[0,.4,0],"memories");
-const calendar=new THREE.Group();calendar.position.set(1.7,0,-2.95);scene.add(calendar);
-round(calendar,.72,.94,.12,mat.cream,[0,1.05,0],.04);round(calendar,.74,.16,.15,mat.wine,[0,1.52,.03],.035);
-for(let i=0;i<3;i++)cyl(calendar,.035,.035,.12,mat.gold,[-.2+i*.2,1.59,.04],12);
-for(let y=0;y<3;y++)for(let x=0;x<3;x++)box(calendar,.065,.045,.018,(x+y)%3===0?mat.wine:mat.gold,[-.2+x*.2,.92+y*.15,.075]);
-hit(calendar,.95,1.3,.3,[0,1.1,0],"calendar");
-const note=new THREE.Group();note.position.set(1.9,.95,1.55);note.rotation.y=-.28;scene.add(note);
-round(note,.52,.36,.035,mat.paper,[0,0,0],.025);hit(note,.7,.55,.2,[0,0,0],"notes");
-const lamp=new THREE.Group();lamp.position.set(3.35,0,-.2);scene.add(lamp);
-cyl(lamp,.07,.08,1.75,mat.gold,[0,.9,0],20);cyl(lamp,.43,.43,.1,mat.wood,[0,.08,0],32);
-const shade=new THREE.Mesh(new THREE.CylinderGeometry(.25,.55,.58,32,1,true),mat.cream);shade.position.y=1.95;lamp.add(shade);
-const bulb=new THREE.PointLight(0xe3eff0,8,4);bulb.position.set(0,1.7,0);lamp.add(bulb);
-makePlant(3.8,2.0,.82);
-
-// Study zone on the right.
-const bookcase=new THREE.Group();bookcase.position.set(8.6,0,-3.45);scene.add(bookcase);
-round(bookcase,2.45,3.35,.48,mat.wood,[0,1.72,0],.06);
-for(const y of [.62,1.55,2.48]){box(bookcase,2.35,.1,.55,mat.gold,[0,y,.04]);}
-for(let row=0;row<3;row++){let x=-.88;for(let n=0;n<6;n++){const w=.16+(n%3)*.035,h=.55+(n%2)*.15;const b=round(bookcase,w,h,.12,[mat.wine,mat.cream,mat.blush,mat.leaf][(n+row)%4],[x+w/2,.94+row*.93+h/2,.12],.018);b.rotation.z=(n%2?-.05:.04);x+=w+.08;}}
-const desk=new THREE.Group();desk.position.set(9.6,0,.85);scene.add(desk);
-round(desk,3.1,.18,1.25,mat.woodLight,[0,1.2,0],.08);
-for(const x of [-1.28,1.28]){round(desk,.13,1.18,.95,mat.wood,[x,.59,0],.04);}
-round(desk,.65,.06,.45,mat.paper,[-.55,1.32,-.12],.015).rotation.y=-.08;
-round(desk,.42,.07,.32,mat.wine,[.55,1.33,-.08],.02);
-const deskLamp=new THREE.Group();deskLamp.position.set(-1.05,1.3,-.25);desk.add(deskLamp);
-cyl(deskLamp,.035,.04,.5,mat.gold,[0,.25,0],12);cyl(deskLamp,.34,.34,.07,mat.gold,[0,.05,0],24);
-const deskShade=new THREE.Mesh(new THREE.ConeGeometry(.32,.42,24),mat.cream);deskShade.position.set(0,.58,0);deskLamp.add(deskShade);
-const chair=new THREE.Group();chair.position.set(9.5,0,2.15);scene.add(chair);
-round(chair,1.05,.18,.85,mat.sofa,[0,.72,0],.08);round(chair,1.05,1.25,.16,mat.sofa,[0,1.32,-.36],.08);
-for(const x of [-.4,.4])cyl(chair,.035,.04,.68,mat.gold,[x,.34,.28],12);
-hit(desk,3.6,2.4,1.8,[0,1.1,0],"notes");
-hit(bookcase,2.8,3.7,.8,[0,1.8,0],"memories");
-makePlant(12.1,2.5,.9);
-
-// Architectural dividers, soft rugs and little floor lights establish each room as a connected place.
-for(const x of [-4.5,4.5]){const post=round(scene,.22,4.9,.22,mat.trim,[x,2.45,-3.75],.05);post.castShadow=true;}
-for(const x of [-8.5,0,8.5]){const glow=new THREE.PointLight(0xd7e9ed,2.2,5);glow.position.set(x,3.2,-1.8);scene.add(glow);}
-makeZoneMarker(-9,"GARDEN");makeZoneMarker(0,"LIVING");makeZoneMarker(9,"STUDY");
-
-// Rich front-facing depth pass: a second architectural plane, layered floor details,
-// and foreground objects make the panorama read as one inhabitable world.
-const frontFrame=new THREE.Group();scene.add(frontFrame);
-for(const x of [-13.25,-4.5,4.5,13.25]){
-  round(frontFrame,.16,5.05,.2,mat.woodLight,[x,2.52,3.52],.035);
-}
-for(const y of [.18,5.02]){
-  round(frontFrame,26.55,.13,.2,mat.woodLight,[0,y,3.52],.035);
-}
-round(scene,27,.16,.28,mat.dark,[0,-.23,3.95],.035);
-round(scene,27,.055,.12,mat.cream,[0,-.12,4.04],.018);
-
-// A quiet stepping-stone path leads into the garden.
-const stoneMat=new THREE.MeshStandardMaterial({color:0xe4ebea,roughness:.96});
-for(let i=0;i<5;i++){
-  const stone=new THREE.Mesh(new THREE.CylinderGeometry(.48,.53,.075,32),stoneMat);
-  stone.position.set(-9.15+(i%2?-.28:.22),.025,2.15+i*.72);
-  stone.scale.set(1,.45,.68);stone.castShadow=true;stone.receiveShadow=true;scene.add(stone);
-}
-for(const x of [-5.05,5.05]){
-  const planter=new THREE.Group();planter.position.set(x,0,3.05);scene.add(planter);
-  cyl(planter,.34,.28,.5,mat.cream,[0,.25,0],32);
-  cyl(planter,.35,.35,.055,mat.gold,[0,.52,0],32);
-  cyl(planter,.025,.035,.72,mat.leaf,[0,.86,0],10);
-  for(let i=0;i<5;i++){
-    const a=i*Math.PI*2/5;
-    const leaf=sphere(planter,.15, i%2?mat.leaf:mat.leaf2,[Math.cos(a)*.22,1.05+(i%2)*.12,Math.sin(a)*.2],[.65,2.2,.6]);
-    leaf.rotation.z=-Math.cos(a)*.48;
-  }
-}
-
-// Living room: a layered curtain rail, soft side curtains and a suspended pendant.
-const curtainMat=new THREE.MeshStandardMaterial({color:0xd7e4e5,roughness:.98});
-round(scene,3.15,.075,.11,mat.gold,[-1.95,4.42,-3.55],.025);
-for(const x of [-3.42,-.48]){
-  const curtain=round(scene,.42,2.55,.1,curtainMat,[x,3.05,-3.48],.06);
-  curtain.rotation.z=x< -1.95?-.025:.025;
-  for(let i=0;i<3;i++)round(scene,.025,2.35,.12,mat.cream,[x+(i-1)*.11,3.05,-3.405],.01);
-}
-const pendant=new THREE.Group();pendant.position.set(.1,0,-1.8);scene.add(pendant);
-cyl(pendant,.018,.018,.72,mat.gold,[0,4.45,0],12);
-const pendantShade=new THREE.Mesh(new THREE.ConeGeometry(.42,.34,32),mat.cream);
-pendantShade.position.set(0,4.02,0);pendant.add(pendantShade);
-const pendantGlow=new THREE.PointLight(0xe9f2ef,3.4,5);pendantGlow.position.set(0,3.8,0);pendant.add(pendantGlow);
-
-// Study: visible drawer fronts, handles and a small reading ledge.
-for(const y of [.38,.72]){
-  round(desk,2.15,.27,.08,mat.wood,[0,y,-.56],.025);
-  for(const x of [-.55,.55])cyl(desk,.035,.035,.055,mat.gold,[x,y,-.505],12);
-}
-round(bookcase,2.55,.12,.62,mat.cream,[0,3.48,.02],.035);
-for(const x of [-.96,.96]){
-  round(bookcase,.08,3.4,.58,mat.woodLight,[x,1.72,.08],.025);
-}
-
-
-
-const deskHit=desk.children.find(o=>o.userData?.room==="notes");
-if(deskHit) desk.remove(deskHit);
+const desk=new THREE.Group();
 clickables.splice(0,clickables.length);
 scene.clear(); scene.fog=new THREE.Fog(0xe3d9d5,24,48); scene.add(hemi,sun,fill);
 mat.wall.color.set(0xe4dcda);mat.side.color.set(0xcfc3c0);mat.floor.color.set(0xb6a8a3);
@@ -203,45 +57,112 @@ mat.wood.map=makeGrainTexture("#715b56","rgba(38,25,24,.8)","rgba(218,177,158,.8
 mat.woodLight.map=makeGrainTexture("#a48b80","rgba(75,49,46,.65)","rgba(238,211,193,.75)",318);mat.woodLight.color.set(0xffffff);mat.woodLight.roughness=.76;mat.woodLight.needsUpdate=true;
 mat.paper.map=makePaperTexture();mat.paper.color.set(0xffffff);mat.paper.roughness=.96;mat.paper.needsUpdate=true;
 const room=new THREE.Group();scene.add(room);
-box(room,15,.22,10,mat.floor,[0,-.18,0]);box(room,15,10,.22,mat.wall,[0,4.75,-4.15]);
-box(room,15,.13,.18,mat.trim,[0,.05,-3.98]);box(room,15,.12,.22,mat.woodLight,[0,8.95,-3.98]);
+box(room,15,.22,10,mat.floor,[0,-.18,0]);
+box(room,15,10,.22,mat.wall,[0,4.75,-4.15]);
+box(room,15,.13,.18,mat.trim,[0,.05,-3.98]);
+
+// A tall window gives the close-up its quiet sense of depth.
 const win=new THREE.Group();win.position.set(0,0,-3.98);room.add(win);
-round(win,4.7,4.05,.16,mat.trim,[0,6.1,0],.05);round(win,4.42,3.78,.06,mat.glass,[0,6.1,.1],.025);
-round(win,.07,3.72,.08,mat.cream,[0,6.1,.16],.015);round(win,4.45,.07,.08,mat.cream,[0,6.1,.16],.015);
-round(win,4.9,.13,.22,mat.wood,[0,4.15,.12],.035);
-for(const x of [-2.55,2.55])round(win,.58,4.15,.2,new THREE.MeshStandardMaterial({color:0xc9b8b3,roughness:.98}),[x,6.05,.22],.07);
-const shelf=new THREE.Group();shelf.position.set(-5,0,-3.5);room.add(shelf);
-round(shelf,1.8,.14,.62,mat.wood,[0,4.7,0],.035);
-for(let i=0;i<5;i++)round(shelf,.19,.72+(i%2)*.15,.22,[mat.wine,mat.cream,mat.blush,mat.woodLight,mat.dark][i],[-.65+i*.31,5.12,.02],.018);
-desk.position.set(0,0,.55);desk.scale.setScalar(1.24);room.add(desk);
-hit(desk,1.25,.4,.85,[0,1.38,.55],"notes");
-const pad=round(desk,.92,.035,.68,mat.paper,[-.15,1.34,.12],.018);pad.rotation.y=-.12;
-round(desk,.62,.025,.42,mat.cream,[.78,1.35,.1],.012);
-const cup=new THREE.Group();cup.position.set(1.18,1.34,.2);desk.add(cup);
-cyl(cup,.16,.19,.25,mat.cream,[0,.12,0],32);cyl(cup,.12,.12,.018,mat.dark,[0,.25,0],32);
-const cabinet=new THREE.Group();cabinet.position.set(1.55,0,.1);room.add(cabinet);
-round(cabinet,1.65,1.25,.78,mat.wood,[0,.66,0],.06);round(cabinet,1.72,.13,.84,mat.woodLight,[0,1.34,0],.035);
-const cal=new THREE.Group();cal.position.set(0,1.48,.16);cabinet.add(cal);
-round(cal,.74,.94,.08,mat.paper,[0,.48,0],.025);round(cal,.76,.18,.1,mat.wine,[0,.88,.05],.025);
-hit(cal,.9,1.2,.3,[0,.48,0],"calendar");
-const frame=new THREE.Group();frame.position.set(-1.55,5.35,-3.5);room.add(frame);
-round(frame,1.18,1.55,.12,mat.gold,[0,0,0],.035);round(frame,1.02,1.38,.045,mat.blush,[0,0,.08],.02);
-hit(frame,1.25,1.6,.3,[0,0,0],"memories");
-const chairNew=new THREE.Group();chairNew.position.set(2.45,0,2.55);room.add(chairNew);
-round(chairNew,1.65,.22,1.05,mat.sofa,[0,1.02,0],.1);round(chairNew,1.65,1.8,.22,mat.sofa,[0,1.92,-.43],.1);
-const rugNew=new THREE.Mesh(new THREE.CylinderGeometry(3.5,3.7,.055,64),new THREE.MeshStandardMaterial({color:0xd3c3bd,roughness:1}));
-rugNew.position.set(0,.015,1.45);rugNew.scale.set(1,.18,.56);room.add(rugNew);
+round(win,4.8,4.05,.18,mat.trim,[0,6.15,0],.05);
+round(win,4.52,3.78,.07,mat.glass,[0,6.15,.12],.025);
+round(win,.075,3.72,.09,mat.cream,[0,6.15,.19],.015);
+round(win,4.55,.075,.09,mat.cream,[0,6.15,.19],.015);
+round(win,4.95,.15,.25,mat.wood,[0,4.08,.14],.035);
+for(const x of [-2.58,2.58]){
+  const curtain=round(win,.48,4.05,.2,mat.blush,[x,6.12,.26],.06);
+  curtain.rotation.z=x<0?-.025:.025;
+}
+
+// Floating shelf, small framed memory and carefully spaced books.
+const shelf=new THREE.Group();shelf.position.set(-1.43,0,-3.48);room.add(shelf);
+round(shelf,1.45,.13,.58,mat.wood,[0,4.25,0],.035);
+for(let i=0;i<5;i++){
+  const h=.55+(i%3)*.11;
+  const book=round(shelf,.17,h,.25,[mat.wine,mat.cream,mat.blush,mat.woodLight,mat.dark][i],[-.49+i*.23,4.25+h/2+.06,.02],.018);
+  book.rotation.z=(i%2?-.045:.035);
+}
+const frame=new THREE.Group();frame.position.set(1.34,4.48,-3.48);room.add(frame);
+round(frame,1.08,1.35,.13,mat.gold,[0,0,0],.035);
+round(frame,.91,1.18,.05,mat.blush,[0,0,.08],.02);
+round(frame,.72,.96,.025,mat.paper,[0,0,.12],.012);
+const portraitGlow=new THREE.Mesh(new THREE.CircleGeometry(.22,32),new THREE.MeshBasicMaterial({color:0xc99b9b}));
+portraitGlow.position.set(0,.12,.145);frame.add(portraitGlow);
+hit(frame,1.18,1.45,.32,[0,0,0],"memories");
+
+// The desk is rebuilt as a single close-up composition, not recycled room furniture.
+desk.position.set(0,0,.45);room.add(desk);
+round(desk,3.55,.2,1.48,mat.woodLight,[0,1.25,0],.075);
+round(desk,3.42,.075,1.38,mat.wood,[0,1.125,0],.035);
+for(const x of [-1.48,1.48]){
+  round(desk,.16,1.08,1.12,mat.wood,[x,.54,-.02],.04);
+  round(desk,.2,.12,1.18,mat.woodLight,[x,.12,-.02],.025);
+}
+round(desk,2.88,.16,.16,mat.wood,[0,.91,-.58],.025);
+for(const x of [-.65,.65]){
+  round(desk,.82,.34,.055,mat.woodLight,[x,.91,-.665],.025);
+  round(desk,.09,.045,.045,mat.gold,[x,.91,-.705],.018);
+}
+round(desk,3.18,.045,.07,mat.gold,[0,1.39,.62],.018);
+
+// A small stack of books, with separate page blocks and cloth-like covers.
+const books=new THREE.Group();books.position.set(-.72,1.37,-.02);desk.add(books);
+for(let i=0;i<3;i++){
+  const y=i*.13;
+  round(books,.88,.105,.58,[mat.wine,mat.woodLight,mat.blush][i],[0,y,0],.025);
+  round(books,.81,.035,.54,mat.paper,[0,y+.052,.012],.012);
+  round(books,.045,.075,.58,mat.gold,[-.405,y+.015,0],.012);
+}
+hit(books,1.05,.55,.72,[0,.14,0],"together");
+
+// Writing paper, a folded letter and a pen.
+const writing=new THREE.Group();writing.position.set(.22,1.39,.16);writing.rotation.y=-.1;desk.add(writing);
+round(writing,.96,.035,.68,mat.paper,[0,0,0],.018);
+round(writing,.82,.012,.52,mat.cream,[0,.022,0],.012);
+for(let i=0;i<5;i++)round(writing,.54,.008,.009,mat.blush,[0,.034,-.16+i*.075],.003);
+const pen=round(desk,.055,.055,.72,mat.gold,[.83,1.43,.1],.018);pen.rotation.z=-.12;
+hit(writing,1.05,.22,.78,[0,.03,0],"notes");
+
+// A compact tear-off calendar and a ceramic cup.
+const cal=new THREE.Group();cal.position.set(1.14,1.39,-.18);desk.add(cal);
+round(cal,.58,.78,.09,mat.paper,[0,.4,0],.025);
+round(cal,.6,.14,.11,mat.wine,[0,.79,.02],.025);
+for(let i=0;i<3;i++)cyl(cal,.025,.025,.12,mat.gold,[-.16+i*.16,.87,.04],12);
+for(let y=0;y<3;y++)for(let x=0;x<3;x++){
+  const cell=round(cal,.055,.035,.012,(x+y)%4===0?mat.wine:mat.gold,[-.17+x*.17,.28+y*.13,.06],.006);
+}
+hit(cal,.72,1.02,.3,[0,.42,0],"calendar");
+const cup=new THREE.Group();cup.position.set(-1.12,1.39,.28);desk.add(cup);
+cyl(cup,.17,.2,.26,mat.cream,[0,.13,0],40);
+cyl(cup,.135,.135,.018,mat.dark,[0,.265,0],32);
+const handle=new THREE.Mesh(new THREE.TorusGeometry(.105,.025,10,24),mat.cream);
+handle.position.set(.17,.15,0);cup.add(handle);
+const tea=new THREE.Mesh(new THREE.CircleGeometry(.12,32),new THREE.MeshBasicMaterial({color:0x80645b}));
+tea.rotation.x=-Math.PI/2;tea.position.y=.277;cup.add(tea);
+hit(cup,.58,.48,.58,[0,.16,0],"together");
+
+// Warm desk lamp, with a restrained pool of light on the writing area.
+const lamp=new THREE.Group();lamp.position.set(-1.34,1.39,-.22);desk.add(lamp);
+cyl(lamp,.24,.27,.075,mat.gold,[0,.04,0],32);
+cyl(lamp,.045,.06,.5,mat.gold,[0,.31,0],20);
+const shade=new THREE.Mesh(new THREE.ConeGeometry(.31,.36,32),mat.cream);
+shade.position.set(0,.72,0);shade.rotation.x=Math.PI;lamp.add(shade);
+const bulb=new THREE.PointLight(0xe8c8b9,1.8,3.2);bulb.position.set(0,.62,.05);lamp.add(bulb);
+
+// Chair edge and a soft rug give the foreground a second depth plane.
+const chairNew=new THREE.Group();chairNew.position.set(2.28,0,2.58);room.add(chairNew);
+round(chairNew,1.42,.2,.92,mat.sofa,[0,1.02,0],.1);
+round(chairNew,1.42,1.62,.2,mat.sofa,[0,1.82,-.38],.1);
+round(chairNew,.72,.16,.48,mat.blush,[0,1.15,.06],.08);
+const rugNew=new THREE.Mesh(new THREE.CylinderGeometry(3.35,3.5,.055,64),new THREE.MeshStandardMaterial({color:0xd3c3bd,roughness:1}));
+rugNew.position.set(0,.015,1.62);rugNew.scale.set(1,.18,.54);room.add(rugNew);
 hemi.intensity=2;sun.position.set(-5,11,8);sun.intensity=2.8;fill.position.set(7,7,-7);fill.intensity=1.1;
 const deskGlow=new THREE.PointLight(0xf2cdb8,2.8,5);deskGlow.position.set(-1.05,3.1,.2);room.add(deskGlow);
 target.set(0,4.05,0);placeCamera();
 
 
-const zones=[
- {title:"书桌",kicker:"LUNE / THE DESK",subtitle:"留一盏灯，写下今天",x:0}
-];
-let activeZone=0;
-function goZone(index,animate=true){activeZone=THREE.MathUtils.clamp(index,0,zones.length-1);target.x=zones[activeZone].x;placeCamera();document.querySelector("#zoneTitle").textContent=zones[activeZone].title;document.querySelector("#zoneKicker").textContent=zones[activeZone].kicker;document.querySelector("#zoneSubtitle").textContent=zones[activeZone].subtitle;document.querySelector("#zoneCounter").textContent=String(activeZone+1).padStart(2,"0")+" — "+String(zones.length).padStart(2,"0");document.querySelectorAll("[data-zone]").forEach(b=>b.classList.toggle("active",Number(b.dataset.zone)===activeZone));}
-document.querySelectorAll("[data-zone]").forEach(b=>b.addEventListener("click",()=>goZone(Number(b.dataset.zone))));
+document.querySelector("#zoneTitle").textContent="书桌";
+document.querySelector("#zoneKicker").textContent="LUNE / THE DESK";
+document.querySelector("#zoneSubtitle").textContent="留一盏灯，写下今天";
 const roomData={
  memories:{index:"01 / 04",title:"记忆相册",description:"把那些舍不得忘记的瞬间，好好收在这里。",symbol:"▧"},
  calendar:{index:"02 / 04",title:"我们的日历",description:"纪念日、计划和普通日子，都可以认真对待。",symbol:"▦"},
@@ -255,16 +176,18 @@ document.querySelector("#closeDialog").addEventListener("click",()=>dialog.close
 const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
 function resize(){const w=screen.clientWidth,h=screen.clientHeight;renderer.setSize(w,h,false);const aspect=w/h;const v=window.matchMedia("(max-width:700px)").matches?8.8:9.2;camera.left=-v*aspect/2;camera.right=v*aspect/2;camera.top=v/2;camera.bottom=-v/2;camera.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(screen);resize();
-let down=false,moved=false,startX=0,lastX=0,startY=0;
-canvas.addEventListener("pointerdown",e=>{down=true;moved=false;startX=lastX=e.clientX;startY=e.clientY;canvas.setPointerCapture(e.pointerId);});
-canvas.addEventListener("pointermove",e=>{if(!down)return;const dx=e.clientX-lastX;if(Math.abs(e.clientX-startX)>7)moved=true;target.x=0;lastX=e.clientX;placeCamera();});
-canvas.addEventListener("pointerup",e=>{down=false;if(moved){const nearest=zones.reduce((best,z,i)=>Math.abs(z.x-target.x)<Math.abs(zones[best].x-target.x)?i:best,0);goZone(nearest);return;}const r=canvas.getBoundingClientRect();pointer.x=(e.clientX-r.left)/r.width*2-1;pointer.y=-((e.clientY-r.top)/r.height*2-1);raycaster.setFromCamera(pointer,camera);const found=raycaster.intersectObjects(clickables,true).find(h=>h.object.userData.room);if(found)openRoom(found.object.userData.room);});
-canvas.addEventListener("pointercancel",()=>down=false);
-canvas.addEventListener("wheel",e=>{if(Math.abs(e.deltaX)>Math.abs(e.deltaY)){target.x=0;placeCamera();}}, {passive:true});
+canvas.addEventListener("pointerup",e=>{
+  const r=canvas.getBoundingClientRect();
+  pointer.x=(e.clientX-r.left)/r.width*2-1;
+  pointer.y=-((e.clientY-r.top)/r.height*2-1);
+  raycaster.setFromCamera(pointer,camera);
+  const found=raycaster.intersectObjects(clickables,true).find(h=>h.object.userData.room);
+  if(found)openRoom(found.object.userData.room);
+});
 let night=localStorage.getItem("lune-theme")==="night";
 function setTheme(){document.body.classList.toggle("night",night);hemi.color.set(night?0x858094:0xf5fbff);hemi.groundColor.set(night?0x342b3b:0x8297a2);sun.color.set(night?0xb7b0d0:0xf1f8ff);sun.intensity=night?1.45:3.05;fill.intensity=night?1.65:1.25;sunDisc.material.color.set(night?0xe3d9f5:0xf4f4e8);scene.fog.color.set(night?0x302831:0xdce8ed);renderer.toneMappingExposure=night ? 0.92 : 1.04;}
 document.querySelector("#themeToggle").addEventListener("click",()=>{night=!night;localStorage.setItem("lune-theme",night?"night":"day");setTheme();});setTheme();
 function animate(){requestAnimationFrame(animate);renderer.render(scene,camera);}
 animate();
 canvas.dataset.ready="true";loading.classList.add("hidden");document.querySelector("#loadError").classList.remove("visible");
-goZone(0);
+
