@@ -1,53 +1,22 @@
-:root{
-  --ink:#514447;--muted:#8d7c7e;--wine:#713f49;--wine-soft:#a9787e;
-  --glass:rgba(248,241,239,.62);--line:rgba(111,73,78,.17);
-  font-family:"DM Sans","Noto Serif SC",sans-serif;color:var(--ink);color-scheme:light
-}
-*{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden}
-body{background:#e3d9d5}
-button{font:inherit;color:inherit}
-.world-screen{position:fixed;inset:0;width:100vw;height:100dvh;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 40%,#f0e8e5 0,#e1d6d3 58%,#cdbfbd 100%);touch-action:none}
-#worldCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y;outline:0}
-.scene-wash{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(255,249,246,.28),transparent 24%,transparent 78%,rgba(61,39,42,.12)),radial-gradient(ellipse at center,transparent 54%,rgba(74,46,50,.08) 100%)}
+:root{--ink:#57464a;--muted:#927e81;--wine:#75434d;--line:#76525b2b;font-family:"DM Sans","Noto Serif SC",sans-serif;color:var(--ink);color-scheme:light}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:#d8cecc}button{font:inherit;color:inherit}
+.world-screen{position:fixed;inset:0;width:100vw;height:100dvh;overflow:hidden;isolation:isolate;background:#d8cecc;touch-action:none}
+#worldCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:0}
+.scene-wash{position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,#fff7f333,transparent 18%,transparent 76%,#2b1c2025),radial-gradient(ellipse at center,transparent 55%,#46313718 100%)}
 .topbar{position:absolute;z-index:4;top:max(13px,env(safe-area-inset-top));left:18px;right:18px;height:38px;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
-.brand,.top-right{pointer-events:auto}
-.brand{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none}
-.brand-mark{width:30px;height:30px;border:1px solid rgba(113,63,73,.48);border-radius:50%;display:grid;place-items:center;color:var(--wine);font:16px Georgia,serif}
-.brand-word{font-size:11px;font-weight:700;letter-spacing:.25em}
-.brand-word small{display:block;margin-top:3px;color:var(--muted);font-size:6px;font-weight:500;letter-spacing:.19em}
-.top-right{display:flex;align-items:center;gap:12px}
-.live-label{font-size:7px;letter-spacing:.16em;color:var(--muted)}
-.live-label i{display:inline-block;width:5px;height:5px;margin:0 6px 1px 0;border-radius:50%;background:var(--wine-soft);box-shadow:0 0 0 4px #a9787e20}
-.theme-toggle{width:34px;height:34px;border:1px solid var(--line);border-radius:50%;background:var(--glass);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);font-size:18px;color:var(--wine);cursor:pointer;box-shadow:0 5px 18px #55383d12}
-.theme-toggle:active{transform:scale(.96)}
-.theme-toggle .moon{display:none}
-.scene-title,.drag-hint,.edge-hint,.zone-nav,.bottom-note{display:none!important}
-.loading{position:absolute;z-index:8;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:radial-gradient(ellipse,#f0e8e5,#d8cbc8);color:#806e70;font-size:9px;letter-spacing:.14em;transition:opacity .65s;pointer-events:none}
-.loading.hidden{opacity:0}
-.loader{width:25px;height:25px;border:1px solid #a9787e;border-right-color:transparent;border-radius:50%;animation:spin .9s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.load-error{display:none;position:absolute;z-index:9;left:20px;right:20px;top:50%;transform:translateY(-50%);padding:18px;border:1px solid #ffffff90;border-radius:14px;background:#eee4e1;color:#604d50;text-align:center;font:12px/1.8 "Noto Serif SC",serif}
-.load-error.visible{display:block}
-dialog{width:min(390px,calc(100% - 34px));padding:0;border:1px solid #ffffffa8;border-radius:15px;background:rgba(245,237,234,.95);color:#514447;box-shadow:0 25px 90px #28191e55;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
-dialog::backdrop{background:#21171970;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.dialog-top{height:48px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:8px;letter-spacing:.18em;color:var(--wine)}
-.dialog-top button{border:0;background:none;font-size:24px;color:var(--wine);cursor:pointer}
-.dialog-content{padding:27px}
-.dialog-index{font-size:8px;letter-spacing:.2em;color:var(--wine)}
-.dialog-content h2{font:500 26px "Noto Serif SC",serif;margin:12px 0}
-.dialog-content p{font:11px/1.9 "Noto Serif SC",serif;color:#806f72}
-.dialog-art{height:112px;margin:20px 0;border:1px solid var(--line);display:grid;place-items:center;font-size:35px;color:var(--wine);background:linear-gradient(135deg,#a9787e20,#fff8)}
-.dialog-content small{font-size:9px;letter-spacing:.08em;color:#806f72}
-body.night .world-screen{background:radial-gradient(ellipse at 50% 40%,#514044,#292123 78%)}
-body.night .scene-wash{background:linear-gradient(180deg,#20171955,transparent 30%,#160f1255),radial-gradient(ellipse at center,transparent 42%,#08060970 100%)}
-body.night .brand{color:#e7d8d5}
-body.night .brand-mark{border-color:#c79da344;color:#e3c4c0}
-body.night .brand-word small,body.night .live-label{color:#c2aeb0}
-body.night .theme-toggle{background:rgba(48,34,38,.72);border-color:#ffffff24;color:#e5c9c5}
-body.night .theme-toggle .sun{display:none}
-body.night .theme-toggle .moon{display:inline}
-body.night dialog{background:rgba(48,36,39,.96);color:#eadbd8;border-color:#ffffff24}
-body.night .dialog-content p,body.night .dialog-content small{color:#c3aaad}
-body.night .dialog-art{background:linear-gradient(135deg,#a9787e20,#21191c)}
-@media(max-width:700px){.topbar{top:max(10px,env(safe-area-inset-top));left:15px;right:15px}.brand-mark{width:29px;height:29px}.live-label{font-size:6px;letter-spacing:.12em}.top-right{gap:9px}.theme-toggle{width:32px;height:32px}}
+.brand,.top-right{pointer-events:auto}.brand{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none}
+.brand-mark{width:30px;height:30px;border:1px solid #75434d77;border-radius:50%;display:grid;place-items:center;color:var(--wine);font:16px Georgia,serif}
+.brand-word{font-size:11px;font-weight:700;letter-spacing:.25em}.brand-word small{display:block;margin-top:3px;color:var(--muted);font-size:6px;font-weight:500;letter-spacing:.19em}
+.top-right{display:flex;align-items:center;gap:12px}.live-label{font-size:7px;letter-spacing:.16em;color:var(--muted)}.live-label i{display:inline-block;width:5px;height:5px;margin:0 6px 1px 0;border-radius:50%;background:#b77f89;box-shadow:0 0 0 4px #a9787e20}
+.theme-toggle{width:35px;height:35px;border:1px solid #76525b35;border-radius:50%;background:#f7eeeb99;backdrop-filter:blur(16px);font-size:18px;color:var(--wine);cursor:pointer;box-shadow:0 5px 18px #55383d12}.theme-toggle .moon{display:none}
+.scene-caption{position:absolute;z-index:2;left:22px;bottom:max(25px,env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:4px;color:#604c50;text-shadow:0 1px 12px #fff9;pointer-events:none}
+.scene-caption span{font-size:7px;letter-spacing:.22em;color:#8c7075}.scene-caption b{font:500 20px "Noto Serif SC",serif;letter-spacing:.12em}.scene-caption small{font:10px "Noto Serif SC",serif;color:#8b7779}
+.loading{position:absolute;z-index:8;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:radial-gradient(ellipse,#f0e8e5,#d8cbc8);color:#806e70;font-size:9px;letter-spacing:.14em;transition:opacity .65s;pointer-events:none}.loading.hidden{opacity:0}
+.loader{width:25px;height:25px;border:1px solid #a9787e;border-right-color:transparent;border-radius:50%;animation:spin .9s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.load-error{display:none;position:absolute;z-index:9;left:20px;right:20px;top:50%;transform:translateY(-50%);padding:18px;border:1px solid #ffffff90;border-radius:14px;background:#eee4e1;color:#604d50;text-align:center;font:12px/1.8 "Noto Serif SC",serif}.load-error.visible{display:block}
+dialog{width:min(390px,calc(100% - 34px));padding:0;border:1px solid #ffffffa8;border-radius:15px;background:#f5edebf2;color:#514447;box-shadow:0 25px 90px #28191e55;backdrop-filter:blur(24px)}dialog::backdrop{background:#21171970;backdrop-filter:blur(8px)}
+.dialog-top{height:48px;padding:0 18px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font-size:8px;letter-spacing:.18em;color:var(--wine)}.dialog-top button{border:0;background:none;font-size:24px;color:var(--wine);cursor:pointer}
+.dialog-content{padding:27px}.dialog-index{font-size:8px;letter-spacing:.2em;color:var(--wine)}.dialog-content h2{font:500 26px "Noto Serif SC",serif;margin:12px 0}.dialog-content p{font:11px/1.9 "Noto Serif SC",serif;color:#806f72}
+.dialog-art{height:112px;margin:20px 0;border:1px solid var(--line);display:grid;place-items:center;font-size:35px;color:var(--wine);background:linear-gradient(135deg,#a9787e20,#fff8)}.dialog-content small{font-size:9px;letter-spacing:.08em;color:#806f72}
+body.night .world-screen{background:#292226}body.night .brand{color:#eadbd8}body.night .brand-mark{border-color:#c79da344;color:#e3c4c0}body.night .brand-word small,body.night .live-label{color:#c2aeb0}body.night .theme-toggle{background:#302226bb;border-color:#ffffff24;color:#e5c9c5}body.night .theme-toggle .sun{display:none}body.night .theme-toggle .moon{display:inline}body.night .scene-caption{color:#f0dfdc}body.night .scene-caption span,body.night .scene-caption small{color:#d0b7b8}body.night dialog{background:#302427f5;color:#eadbd8}body.night .dialog-content p,body.night .dialog-content small{color:#c3aaad}
+@media(max-width:700px){.topbar{top:max(10px,env(safe-area-inset-top));left:15px;right:15px}.brand-mark{width:29px;height:29px}.live-label{font-size:6px;letter-spacing:.12em}.top-right{gap:9px}.theme-toggle{width:32px;height:32px}.scene-caption{left:17px;bottom:max(20px,env(safe-area-inset-bottom))}.scene-caption b{font-size:18px}}
