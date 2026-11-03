@@ -196,6 +196,12 @@ mat.wall.color.set(0xe4dcda);mat.side.color.set(0xcfc3c0);mat.floor.color.set(0x
 mat.trim.color.set(0x80666a);mat.wood.color.set(0x755c5b);mat.woodLight.color.set(0xa58a82);
 mat.sofa.color.set(0x9b8587);mat.blush.color.set(0xc6a6a5);mat.cream.color.set(0xeee7e1);
 mat.wine.color.set(0x70434b);mat.gold.color.set(0xb49a82);mat.paper.color.set(0xf4eee7);
+// Procedural material pass inspired by the reference project: fine wood grain and handmade paper, generated locally without external image assets.
+function makeGrainTexture(base,dark,light,seed){const canvas=document.createElement("canvas");canvas.width=1024;canvas.height=384;const x=canvas.getContext("2d");x.fillStyle=base;x.fillRect(0,0,1024,384);let n=seed;const rand=()=>{n=(n*1664525+1013904223)>>>0;return n/4294967296;};for(let i=0;i<18;i++){const y=rand()*384,h=8+rand()*34;x.fillStyle=rand()<.5?dark:light;x.globalAlpha=.08+rand()*.09;x.fillRect(0,y,1024,h);}x.globalAlpha=1;for(let i=0;i<620;i++){const y=rand()*384,x0=rand()*1024,len=180+rand()*900,amp=.8+rand()*3.8,phase=rand()*6.28;x.strokeStyle=rand()<.68?dark:light;x.globalAlpha=.06+rand()*.13;x.lineWidth=.5+rand()*1.3;x.beginPath();for(let k=0;k<=16;k++){const px=x0+len*k/16,py=y+Math.sin(k*.48+phase)*amp+Math.sin(k*.13+phase)*amp*.35;k?x.lineTo(px,py):x.moveTo(px,py);}x.stroke();}x.globalAlpha=1;for(let i=0;i<2600;i++){x.fillStyle=rand()<.55?dark:light;x.globalAlpha=.035+rand()*.07;x.fillRect(rand()*1024,rand()*384,1+rand()*2,.7+rand()*1.3);}x.globalAlpha=1;const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=Math.min(8,renderer.capabilities.getMaxAnisotropy());return t;}
+function makePaperTexture(){const canvas=document.createElement("canvas");canvas.width=512;canvas.height=512;const x=canvas.getContext("2d");x.fillStyle="#eee6df";x.fillRect(0,0,512,512);let n=914;for(let i=0;i<7000;i++){n=(n*1664525+1013904223)>>>0;const px=(n>>>8)%512;n=(n*1664525+1013904223)>>>0;const py=(n>>>8)%512;x.fillStyle=(n&1)?"rgba(105,70,68,.045)":"rgba(255,255,255,.18)";x.fillRect(px,py,1+(n%2),1);}const t=new THREE.CanvasTexture(canvas);t.colorSpace=THREE.SRGBColorSpace;return t;}
+mat.wood.map=makeGrainTexture("#715b56","rgba(38,25,24,.8)","rgba(218,177,158,.8)",712);mat.wood.color.set(0xffffff);mat.wood.roughness=.72;mat.wood.needsUpdate=true;
+mat.woodLight.map=makeGrainTexture("#a48b80","rgba(75,49,46,.65)","rgba(238,211,193,.75)",318);mat.woodLight.color.set(0xffffff);mat.woodLight.roughness=.76;mat.woodLight.needsUpdate=true;
+mat.paper.map=makePaperTexture();mat.paper.color.set(0xffffff);mat.paper.roughness=.96;mat.paper.needsUpdate=true;
 const room=new THREE.Group();scene.add(room);
 box(room,15,.22,10,mat.floor,[0,-.18,0]);box(room,15,10,.22,mat.wall,[0,4.75,-4.15]);
 box(room,15,.13,.18,mat.trim,[0,.05,-3.98]);box(room,15,.12,.22,mat.woodLight,[0,8.95,-3.98]);
@@ -213,15 +219,15 @@ const pad=round(desk,.92,.035,.68,mat.paper,[-.15,1.34,.12],.018);pad.rotation.y
 round(desk,.62,.025,.42,mat.cream,[.78,1.35,.1],.012);
 const cup=new THREE.Group();cup.position.set(1.18,1.34,.2);desk.add(cup);
 cyl(cup,.16,.19,.25,mat.cream,[0,.12,0],32);cyl(cup,.12,.12,.018,mat.dark,[0,.25,0],32);
-const cabinet=new THREE.Group();cabinet.position.set(4.6,0,.1);room.add(cabinet);
+const cabinet=new THREE.Group();cabinet.position.set(1.55,0,.1);room.add(cabinet);
 round(cabinet,1.65,1.25,.78,mat.wood,[0,.66,0],.06);round(cabinet,1.72,.13,.84,mat.woodLight,[0,1.34,0],.035);
 const cal=new THREE.Group();cal.position.set(0,1.48,.16);cabinet.add(cal);
 round(cal,.74,.94,.08,mat.paper,[0,.48,0],.025);round(cal,.76,.18,.1,mat.wine,[0,.88,.05],.025);
 hit(cal,.9,1.2,.3,[0,.48,0],"calendar");
-const frame=new THREE.Group();frame.position.set(4.75,5.35,-3.5);room.add(frame);
+const frame=new THREE.Group();frame.position.set(-1.55,5.35,-3.5);room.add(frame);
 round(frame,1.18,1.55,.12,mat.gold,[0,0,0],.035);round(frame,1.02,1.38,.045,mat.blush,[0,0,.08],.02);
 hit(frame,1.25,1.6,.3,[0,0,0],"memories");
-const chairNew=new THREE.Group();chairNew.position.set(0,0,2.55);room.add(chairNew);
+const chairNew=new THREE.Group();chairNew.position.set(2.45,0,2.55);room.add(chairNew);
 round(chairNew,1.65,.22,1.05,mat.sofa,[0,1.02,0],.1);round(chairNew,1.65,1.8,.22,mat.sofa,[0,1.92,-.43],.1);
 const rugNew=new THREE.Mesh(new THREE.CylinderGeometry(3.5,3.7,.055,64),new THREE.MeshStandardMaterial({color:0xd3c3bd,roughness:1}));
 rugNew.position.set(0,.015,1.45);rugNew.scale.set(1,.18,.56);room.add(rugNew);
@@ -234,7 +240,7 @@ const zones=[
  {title:"书桌",kicker:"LUNE / THE DESK",subtitle:"留一盏灯，写下今天",x:0}
 ];
 let activeZone=0;
-function goZone(index,animate=true){activeZone=THREE.MathUtils.clamp(index,0,2);target.x=zones[activeZone].x;placeCamera();document.querySelector("#zoneTitle").textContent=zones[activeZone].title;document.querySelector("#zoneKicker").textContent=zones[activeZone].kicker;document.querySelector("#zoneSubtitle").textContent=zones[activeZone].subtitle;document.querySelector("#zoneCounter").textContent=String(activeZone+1).padStart(2,"0")+" — 03";document.querySelectorAll("[data-zone]").forEach(b=>b.classList.toggle("active",Number(b.dataset.zone)===activeZone));}
+function goZone(index,animate=true){activeZone=THREE.MathUtils.clamp(index,0,zones.length-1);target.x=zones[activeZone].x;placeCamera();document.querySelector("#zoneTitle").textContent=zones[activeZone].title;document.querySelector("#zoneKicker").textContent=zones[activeZone].kicker;document.querySelector("#zoneSubtitle").textContent=zones[activeZone].subtitle;document.querySelector("#zoneCounter").textContent=String(activeZone+1).padStart(2,"0")+" — "+String(zones.length).padStart(2,"0");document.querySelectorAll("[data-zone]").forEach(b=>b.classList.toggle("active",Number(b.dataset.zone)===activeZone));}
 document.querySelectorAll("[data-zone]").forEach(b=>b.addEventListener("click",()=>goZone(Number(b.dataset.zone))));
 const roomData={
  memories:{index:"01 / 04",title:"记忆相册",description:"把那些舍不得忘记的瞬间，好好收在这里。",symbol:"▧"},
