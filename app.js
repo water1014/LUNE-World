@@ -18,6 +18,7 @@ function openRoom(key){
  document.querySelector("#panelFoot").textContent=room.foot;
  overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
 }
+window.openRoom=openRoom;
 document.querySelectorAll("[data-room]").forEach(item=>item.addEventListener("click",()=>openRoom(item.dataset.room)));
 document.querySelector("#close").addEventListener("click",close);
 document.querySelector("#veil").addEventListener("click",close);
@@ -25,6 +26,7 @@ document.addEventListener("keydown",event=>{if(event.key==="Escape")close();});
 const toggle=document.querySelector("#themeToggle");
 toggle.addEventListener("click",()=>{
  const night=document.body.classList.toggle("night");
+ window.dispatchEvent(new CustomEvent("lune-theme",{detail:{night}}));
  document.querySelector("#themeGlyph").textContent=night?"☀":"☾";
  toggle.setAttribute("aria-label",night?"切换日间":"切换夜间");
 });
