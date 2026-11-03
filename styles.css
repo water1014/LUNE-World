@@ -79,3 +79,12 @@
 .scene-caption{bottom:8px}
 .scene-tip{left:470px;bottom:8px}
 @media(max-width:700px){.room{width:1536px;height:768px;transform:scale(.77);transform-origin:top left}.room-scroll{height:590px}.tabletop{top:385px}}
+
+
+/* LUNE 3D scene renderer */
+.room{isolation:isolate;background:linear-gradient(180deg,#aeb9c7 0%,#c8b9b8 48%,#b99f94 100%)}
+#lune3d{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:8;touch-action:pan-y;cursor:grab}
+#lune3d:active{cursor:grabbing}
+.room> :not(#lune3d){visibility:hidden!important;pointer-events:none!important}
+.room-scroll{background:#b7a5a3}
+@media(max-width:700px){.room-scroll{height:min(78svh,720px);min-height:560px}.room{margin:0;width:1120px;height:700px}}
