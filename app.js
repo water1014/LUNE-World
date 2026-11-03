@@ -7,8 +7,8 @@ const scene=new THREE.Scene();
 scene.fog=new THREE.Fog(0xdce8ed,24,48);
 // Perspective 3/4 view, looking down into the desk instead of facing the wall.
 const camera=new THREE.PerspectiveCamera(48,1,.1,100);
-const target=new THREE.Vector3(0,2.7,0);
-let elevation=.43,azimuth=.34,radius=12.4;
+const target=new THREE.Vector3(0,2.25,0);
+let elevation=.82,azimuth=.58,radius=8.9;
 let cameraTween=null,returnPose=null;
 function syncOrbitFromPose(){const d=camera.position.clone().sub(target);radius=d.length();elevation=Math.asin(THREE.MathUtils.clamp(d.y/radius,-.95,.95));azimuth=Math.atan2(d.x,d.z);}
 function placeCamera(){camera.position.set(target.x+Math.sin(azimuth)*Math.cos(elevation)*radius,target.y+Math.sin(elevation)*radius, target.z+Math.cos(azimuth)*Math.cos(elevation)*radius);camera.lookAt(target);camera.updateProjectionMatrix();}
@@ -207,8 +207,8 @@ canvas.addEventListener("pointermove",e=>{
   const dx=e.clientX-gesture.lastX,dy=e.clientY-gesture.lastY;
   if(Math.hypot(e.clientX-gesture.x,e.clientY-gesture.y)>7)gesture.moved=true;
   if(gesture.moved){
-    azimuth-=dx*.0042;
-    elevation=THREE.MathUtils.clamp(elevation+dy*.0027,.18,.92);
+    azimuth-=dx*.0052;
+    elevation=THREE.MathUtils.clamp(elevation+dy*.0042,.42,1.08);
     placeCamera();
   }
   gesture.lastX=e.clientX;gesture.lastY=e.clientY;
